@@ -319,7 +319,7 @@ body.navmode .glass{backdrop-filter:blur(10px) saturate(1.4);-webkit-backdrop-fi
 #spd .sn{position:relative;text-align:center;line-height:1}#spd .sn b{display:block;font:500 42px/1 Oswald,Outfit,sans-serif;color:#fff}#spd .sn small{font-size:15px;color:#fff;opacity:.92}
 #spd.al .sn b{color:#ff6b6b}
 #slm{position:absolute;right:-18px;top:-18px;width:52px;height:52px;border-radius:50%;background:#fff;border:6px solid #ff6b6b;display:none;place-items:center;font:500 22px Oswald,Outfit,sans-serif;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.4)}
-#spd.al.hl #slm{display:grid}
+#spd.hl #slm{display:grid}
 /* ---- v3 ---- */
 #spd{width:80px;height:80px}#spd .sn b{font-size:31px}#spd .sn small{font-size:11.5px}
 #slm{width:38px;height:38px;right:-14px;top:-14px;border-width:5px;font-size:16px}
@@ -458,6 +458,20 @@ button:active{transform:scale(.97)}
 #then{display:none;flex-basis:calc(100% + 32px);align-items:center;gap:8px;margin:2px -18px -14px -14px;padding:9px 16px;background:var(--fill);border-top:1px solid var(--edge);font-size:14px;font-weight:600;color:var(--mut)}
 #then i{display:grid;margin:0;color:var(--tx)}#thn{color:var(--tx);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#then .mv{width:20px;height:20px;stroke-width:2.4}
 #turn.th #then{display:flex}
+#lanes{display:none;flex-basis:calc(100% + 32px);justify-content:center;gap:6px;margin:4px -18px 0 -14px;padding:8px 12px;background:rgba(0,0,0,.22);border-top:1px solid var(--edge)}
+.light #lanes{background:rgba(12,40,28,.05)}
+#turn.ln #lanes{display:flex}#turn.ln:not(.th) #lanes{margin-bottom:-14px}
+#lanes span{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--mut2);border:1px solid var(--edge)}
+#lanes span.ok{color:var(--on);background:var(--mint);border-color:var(--mint)}
+#lanes .mv{width:24px;height:24px;stroke-width:2.4}
+#pk{display:none;margin:0 0 12px}
+#spd #slm{top:auto;bottom:-8px;right:-22px}
+@media(orientation:portrait),(min-height:521px){body.navmode #rep{bottom:calc(var(--botH,190px) + 116px + env(safe-area-inset-bottom) - var(--gap,0px))}}
+.pkc{display:flex;width:100%;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r2);background:rgba(var(--mrgb),.1);border:1px solid rgba(var(--mrgb),.35);text-align:left;color:var(--tx)}
+.pkc .pp{width:34px;height:34px;border-radius:10px;font-weight:800;flex:none}
+.pkt{flex:1;min-width:0}.pkt b{display:block;font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pkt small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px}
+.pkc em{font-style:normal;font-weight:700;font-size:14px;padding:8px 14px;border-radius:12px;background:var(--mint);color:var(--on)}
+.pkp{width:30px;height:30px;border-radius:9px;background:#2f6fd0;color:#fff;font-weight:800;font-size:15px;border:2px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.4);display:grid;place-items:center;padding:0}
 
 /* ---- bottom trip panel ---- */
 #bot{padding-top:8px}
@@ -546,9 +560,9 @@ function fit(){var h=innerHeight,w=innerWidth,sh=w>h?Math.min(screen.width,scree
 d.style.setProperty('--gap',g+'px');d.style.setProperty('--H',(h+g)+'px');try{map.resize()}catch(e){}}
 fit();['resize','orientationchange','pageshow'].forEach(function(e){addEventListener(e,function(){fit();setTimeout(fit,200);setTimeout(fit,700)})})})();
 </script>
-<meta name="build" content="2026-11-02a">
+<meta name="build" content="2026-11-02b">
 <script>
-(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02a";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
+(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02b";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
 try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/name="build" content="([^"]+)"/);if(m&&m[1]!==B){try{sessionStorage.setItem("rl",String((+sessionStorage.getItem("rl")||0)+1))}catch(e){}location.replace(location.pathname+"?v="+m[1])}}).catch(function(){})}catch(e){}})();
 </script>
 </head>
@@ -589,7 +603,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   </div>
   <div id="res" class="glass"></div>
   <div id="dk"><div class="dkc" id="dkc"></div>
-    <div id="dkl"></div><div class="bld">Version 2026-11-02a</div></div>
+    <div id="dkl"></div><div class="bld">Version 2026-11-02b</div></div>
   <div class="chips main">
     <button class="chip glass" onclick="goSaved('home')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</button>
     <button class="chip glass" onclick="goSaved('work')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3"/></svg>Work</button>
@@ -630,7 +644,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   <div id="hl"></div>
 </div>
 
-<div id="turn" class="fixed glass" role="status" aria-live="polite"><div id="arr" aria-hidden="true"></div><div><div id="dist"></div><div id="ins"></div></div><div id="then" aria-hidden="true"><span>Then</span><i id="thi"></i><span id="thn"></span></div></div>
+<div id="turn" class="fixed glass" role="status" aria-live="polite"><div id="arr" aria-hidden="true"></div><div><div id="dist"></div><div id="ins"></div></div><div id="lanes" aria-hidden="true"></div><div id="then" aria-hidden="true"><span>Then</span><i id="thi"></i><span id="thn"></span></div></div>
 <div id="spot" class="fixed glass sheet"></div>
 <div id="ttl" onclick="if(event.target===this)ttlClose()"><div class="ttc glass"><div class="lbl">Name this place</div><small id="tts" class="spnote"></small><input id="tti" class="spin" maxlength="40" placeholder="Name" autocomplete="off"><div class="cta"><button style="flex:1" onclick="ttlClose()">Cancel</button><button class="go" onclick="ttlSave()">Save</button></div></div></div>
 <div id="tst" class="glass tst" role="status" aria-live="polite"></div>
@@ -663,6 +677,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
     <div><div class="big" id="km">--</div><div class="lbl">Distance</div></div>
   </div>
   <div class="prog" aria-hidden="true"><span id="pgb"></span></div>
+  <div id="pk"></div>
   <div id="bdet"></div>
   <div class="cta"><button class="go end" onclick="stopNav()">End trip</button><button onclick="mute=!mute;this.classList.toggle('off',mute);$('vt').textContent=mute?'Voice off':'Voice on'"><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6"/></svg><span id="vt">Voice on</span></button></div>
 </div>
@@ -722,6 +737,7 @@ function onPos(p){
   fix={p:at,t:performance.now(),e:v*Math.sin(tgtB*r)/(111320*Math.cos(at[1]*r)),n:v*Math.cos(tgtB*r)/111320};
   if(!disp){disp=at.slice();dispB=tgtB;meMk.setLngLat(disp).addTo(map)}
   if(!map._c){map.jumpTo({center:me,zoom:15});map._c=1;applyTheme()}
+  window._acc=c.accuracy;window._spd=v;
   if(!nav)return;
   if(trip&&prev){const d=dm(prev,me);if(d>2&&d<250)trip.m+=d}
   $('sv').textContent=Math.round((c.speed||0)*3.6);
@@ -966,31 +982,67 @@ async function startNav(){
   if(nav){switchRoute();return}
   nav=true;free=false;hdg=null;$('rc').style.display='none';document.body.classList.add('navmode');idx=Math.min(1,S().length-1);$('sheet').style.display='none';$('top').style.display='none';$('turn').style.display='flex';$('bot').style.display='block';$('spd').style.display='flex';
   clearLabels();for(let i=0;i<4;i++)if(i!==sel&&map.getLayer('l'+i))map.removeLayer('l'+i);
-  say('Starting navigation','Memulakan navigasi');window._said=-1;window._said1=-1;
+  say('Starting navigation','Memulakan navigasi');window._said=-1;window._said1=-1;offT=0;SL.v=0;SL.t=0;SL.at=null;clearPk();$('turn').classList.remove('ln','th');
   const b0=S()[0].maneuver.bearing_after;if(b0!=null)dispB=tgtB=b0;snapRt=null;{const sn=snapRoute(me);if(sn){disp=sn.p.slice();fix={p:sn.p,t:performance.now(),e:0,n:0};dispB=tgtB=sn.b}}askNotif();
   trip={id:Date.now(),at:Date.now(),name:destName||'Destination',to:dest.slice(),m:0};saveTrip(false);
   lockCam({center:me,bearing:dispB,duration:1600});track();
   keepAwake();loadBdet();
 }
-function stopNav(arrived){store.set('reports',[]);try{loadReports()}catch(e){}$('bot').classList.remove('exp');altOpen=false;document.body.classList.remove('alts');hdg=null;saveTrip(!!arrived);trip=null;camOn=false;nav=false;free=false;$('rc').style.display='none';document.body.classList.remove('navmode');speechSynthesis.cancel();
+function stopNav(arrived){clearPk();store.set('reports',[]);try{loadReports()}catch(e){}$('bot').classList.remove('exp');altOpen=false;document.body.classList.remove('alts');hdg=null;saveTrip(!!arrived);trip=null;camOn=false;nav=false;free=false;$('rc').style.display='none';document.body.classList.remove('navmode');speechSynthesis.cancel();
   $('turn').style.display=$('bot').style.display=$('spd').style.display='none';$('top').style.display='block';clearRoute()}
 function track(){
   const st=S(),s=st[idx];if(!s||!me)return;
   const d=dm(me,s.maneuver.location);
   $('dist').innerHTML=d>=1000?(d/1000).toFixed(1)+'<i>km</i>':Math.round(d/10)*10+'<i>m</i>';
-  if($('ins').textContent!==text(s)){$('arr').classList.remove('bump');void $('arr').offsetWidth;$('arr').classList.add('bump')}$('ins').textContent=text(s);if($('arr')._k!==arrow(s)){$('arr')._k=arrow(s);$('arr').innerHTML=mvSvg(arrow(s))}
+  const arrv=s.maneuver.type==='arrive',side=arrv?arrSide():'',T=arrv?'Arrive at '+(destName||'your destination')+(side?', on the '+side:''):text(s);
+  if($('ins').textContent!==T){$('arr').classList.remove('bump');void $('arr').offsetWidth;$('arr').classList.add('bump')}$('ins').textContent=T;
+  showLanes(s,d);if($('arr')._k!==arrow(s)){$('arr')._k=arrow(s);$('arr').innerHTML=mvSvg(arrow(s))}
   {const nx=st[idx+1];const th=nx&&s.maneuver.type!=='arrive'&&s.distance<450;$('turn').classList.toggle('th',!!th);if(th){$('thi').innerHTML=mvSvg(arrow(nx));$('thn').textContent=nx.maneuver.type==='arrive'?'arrive at '+(destName||'destination'):(nx.name||'')}}
   if(d<1300&&d>700&&window._said1!==idx&&st[idx-1]&&st[idx-1].distance>1800&&s.maneuver.type!=='arrive'){window._said1=idx;say('In 1 kilometre, '+text(s),'Dalam 1 kilometer, '+textMs(s))}
-  if(d<250&&window._said!==idx){window._said=idx;{const dd=Math.max(50,Math.round(d/50)*50),arr=s.maneuver.type==='arrive';say(arr?'You will arrive soon':'In '+dd+' metres, '+text(s),arr?'Anda akan tiba tidak lama lagi':'Dalam '+dd+' meter, '+textMs(s))}}
-  if(d<30){if(s.maneuver.type==='arrive'){say('You have arrived','Anda telah tiba');notify('You have arrived',destName||'Destination','arrive');stopNav(true);return}idx++;return track()}
+  if(d<250&&window._said!==idx){window._said=idx;{const dd=Math.max(50,Math.round(d/50)*50),arr=s.maneuver.type==='arrive';say(arr?'You will arrive soon'+(side?'. Your destination is on the '+side:''):'In '+dd+' metres, '+text(s),arr?'Anda akan tiba tidak lama lagi'+(side?'. Destinasi di sebelah '+(side==='left'?'kiri':'kanan'):''):'Dalam '+dd+' meter, '+textMs(s))}}
+  if(d<30){if(s.maneuver.type==='arrive'){say('You have arrived'+(side?'. Your destination is on the '+side:''),'Anda telah tiba'+(side?'. Destinasi di sebelah '+(side==='left'?'kiri':'kanan'):''));notify('You have arrived',destName||'Destination','arrive');stopNav(true);return}idx++;return track()}
   let sec=st[idx-1]?st[idx-1].duration*Math.min(1,d/Math.max(st[idx-1].distance,1)):0,m=d;
   for(let i=idx;i<st.length;i++){sec+=st[i].duration;m+=st[i].distance}
   window._remSec=sec;$('rem').innerHTML=Math.max(1,Math.round(sec/60))+'<i>min</i>';$('km').innerHTML=(m/1000).toFixed(1)+'<i>km</i>';{const T=routes[sel].distance||1;$('pgb').style.transform='scaleX('+Math.max(0,Math.min(1,1-m/T)).toFixed(3)+')'}
   $('eta').textContent=new Date(Date.now()+sec*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
-  const path=routes[sel].geometry.coordinates;let off=1e9;for(let i=0;i<path.length;i+=2){off=Math.min(off,dm(me,path[i]))}
-  if(off>90&&Date.now()-lastRe>15000){lastRe=Date.now();say('Rerouting','Mengira semula laluan');
-    fetchRoutes(false).then(r=>{routes=r;sel=0;idx=Math.min(1,S().length-1);clearLayers();draw();for(let i=1;i<4;i++)if(map.getLayer('l'+i))map.removeLayer('l'+i);track()}).catch(()=>{})}
+  if(m<1500&&trip&&!trip.pk){trip.pk=1;navParking()}
+  // off-route: measure to the route's segments (not just its corner points), allow for GPS accuracy,
+  // and only reroute once you have been off the line for a few seconds while actually moving
+  const off=routeOff(me),acc=Math.min(80,window._acc||20),lim=Math.max(45,Math.min(120,acc*1.6+20));
+  if(off>lim){if(!offT)offT=Date.now()}else offT=0;
+  if(offT&&Date.now()-offT>3000&&((window._spd||0)>1.5||off>150)&&Date.now()-lastRe>12000&&!altOpen)reroute('Rerouting','Mengira semula laluan');
 }
+let offT=0;
+function routeOff(pt){const c=routes[sel].geometry.coordinates,X=111320*Math.cos(pt[1]*Math.PI/180),Y=110574;let b=1e9;
+  for(let i=0;i<c.length-1;i++){const A=c[i],B=c[i+1],ax=(A[0]-pt[0])*X,ay=(A[1]-pt[1])*Y,dx=(B[0]-A[0])*X,dy=(B[1]-A[1])*Y,l2=dx*dx+dy*dy,t=l2?Math.max(0,Math.min(1,-(ax*dx+ay*dy)/l2)):0,q=Math.hypot(ax+t*dx,ay+t*dy);if(q<b)b=q}
+  return c.length>1?b:dm(pt,c[0])}
+function reroute(en,ms){lastRe=Date.now();offT=0;say(en,ms);toast(en+'…',2500);
+  fetchRoutes(false).then(r=>{if(!nav||!r||!r.length)return;routes=r;sel=0;idx=Math.min(1,S().length-1);window._said=window._said1=-1;snapRt=null;clearLayers();draw();navOnly();renderBdet();track()}).catch(()=>toast('Could not reroute. Trying again shortly.'))}
+// which side of the road the destination is on (from the last stretch of the route)
+function arrSide(){const r=routes[sel];if(!r||!dest)return '';if(r._side!=null)return r._side;const c=r.geometry.coordinates,n=c.length-1,B=c[n];let A=null,sd='';
+  for(let i=n-1;i>=0;i--)if(dm(c[i],B)>8){A=c[i];break}
+  if(A&&dm(B,dest)>12){const k=Math.cos(B[1]*Math.PI/180),dx=(B[0]-A[0])*k,dy=B[1]-A[1],vx=(dest[0]-B[0])*k,vy=dest[1]-B[1];sd=dx*vy-dy*vx>0?'left':'right'}
+  return r._side=sd}
+// lane guidance (from routing data that includes lanes)
+const LNK={'left':'left','slight left':'bleft','sharp left':'sleft','straight':'straight','right':'right','slight right':'bright','sharp right':'sright','uturn':'uturn','none':'straight'};
+function showLanes(s,d){const I=s.intersections&&s.intersections[0],L=I&&I.lanes,tc=$('turn');
+  if(!L||L.length<2||d>1000||!L.some(l=>!l.valid)||s.maneuver.type==='arrive'){tc.classList.remove('ln');return}
+  const mod=s.maneuver.modifier||'straight',k=L.map(l=>{const ind=l.indications||['none'],pick=l.valid&&ind.includes(mod)?mod:ind[0];return(l.valid?'1':'0')+(LNK[pick]||'straight')}).join(',');
+  if(tc._ln!==k){tc._ln=k;$('lanes').innerHTML=k.split(',').map(x=>`<span class="${x[0]==='1'?'ok':''}">${mvSvg(x.slice(1))}</span>`).join('')}
+  tc.classList.add('ln')}
+// parking near the destination, offered once you are about 1.5 km away
+let pkMk=[];
+async function navParking(){if(!dest)return;const to=dest.slice();
+  try{const el=await ovq(`[out:json][timeout:8];nwr(around:600,${to[1]},${to[0]})[amenity=parking][access!~"^(private|no|customers_only)$"];out tags center 20;`);if(!nav||!dest||dest[0]!==to[0]||dest[1]!==to[1])return;
+    const a=el.map(e=>{const t=e.tags||{};return{n:t.name||'Parking',fee:t.fee,ll:[e.lon!=null?e.lon:e.center&&e.center.lon,e.lat!=null?e.lat:e.center&&e.center.lat]}}).filter(x=>x.ll[0]!=null).map(x=>Object.assign(x,{d:dm(to,x.ll)})).sort((a,b)=>a.d-b.d).slice(0,5);
+    clearPk();window._pk=a;if(!a.length)return;
+    a.forEach((x,i)=>{const e=document.createElement('button');e.className='pkp';e.textContent='P';e.setAttribute('aria-label','Park at '+x.n);e.onclick=ev=>{ev.stopPropagation();goPark(i)};pkMk.push(new maplibregl.Marker({element:e}).setLngLat(x.ll).addTo(map))});
+    const f=a[0];$('pk').innerHTML=`<button class="pkc" onclick="goPark(0)"><span class="pp">P</span><span class="pkt"><b>${esc(f.n)}</b><small>${a.length>1?a.length+' car parks':'Car park'} near your destination · ${fmtD(f.d)} from it${f.fee==='no'?' · free':''}</small></span><em>Go</em></button>`;
+    $('pk').style.display='block'}catch(e){}}
+function clearPk(){pkMk.forEach(m=>m.remove());pkMk=[];window._pk=[];const p=$('pk');if(p){p.innerHTML='';p.style.display='none'}}
+function goPark(i){const x=(window._pk||[])[i];if(!x||!nav)return;const was=destName;clearPk();dest=x.ll.slice();destName=x.n==='Parking'?'Parking near '+(was||'destination'):x.n;
+  if(destMk)destMk.remove();destMk=new maplibregl.Marker({element:pinEl()}).setLngLat(dest).addTo(map);if(trip){trip.to=dest.slice();trip.name=destName}
+  bd&&(bd.name=destName);reroute('Going to parking','Menuju ke tempat letak kereta')}
 
 // ---- saved places & reports ----
 function goSaved(k){const p=store.get('saved_'+k);if(!p){$('q').focus();setSlot(k);return}setDest({lng:p[0],lat:p[1]},store.get('savedn_'+k)||k)}
@@ -1471,12 +1523,18 @@ applyCar();
 /* ---------- round speed gauge (turns red from 100 km/h) ---------- */
 (function(){let h='';for(let i=0;i<60;i++)h+=`<line x1="50" y1="7" x2="50" y2="13.5" transform="rotate(${i*6} 50 50)"/>`;$('spr').innerHTML=h})();
 const SL={v:0,t:0};let _gk='';
-async function lookupLimit(){if(!me)return;try{const el=await ovq(`[out:json][timeout:6];way(around:25,${me[1]},${me[0]})[highway][maxspeed];out tags 6;`);let best=0;
-  el.forEach(e=>{let m=parseInt(e.tags.maxspeed);if(/mph/.test(e.tags.maxspeed))m=Math.round(m*1.609);if(m>best)best=m});SL.v=best}catch(e){}}
-function gauge(){const g=$('spd'),v=+$('sv').textContent||0,al=v>=100,n=al?Math.min(30,3+Math.round((v-100)*.8)):0,k=al+'|'+n+'|'+SL.v;if(k===_gk)return;_gk=k;
-  g.classList.toggle('al',al);g.classList.toggle('hl',al&&SL.v>0);$('slv').textContent=SL.v||'';
+async function lookupLimit(){if(!me||SL.busy)return;SL.busy=1;
+  try{const el=await ovq(`[out:json][timeout:6];way(around:20,${me[1]},${me[0]})[highway][maxspeed];out tags 8;`),st=nav&&routes[sel]?S():null,rn=((st&&st[idx-1]&&st[idx-1].name)||'').toLowerCase();let best=0,hit=-1;
+    // prefer the road you are actually on (matches the current step's road name), else the fastest nearby
+    el.forEach(e=>{let m=parseInt(e.tags.maxspeed);if(!m)return;if(/mph/.test(e.tags.maxspeed))m=Math.round(m*1.609);const nm=((e.tags.name||'')+' '+(e.tags.ref||'')).toLowerCase(),h=rn&&nm.includes(rn)?1:0;if(h>hit||(h===hit&&m>best)){best=m;hit=h}});
+    SL.v=best}catch(e){}SL.busy=0}
+function gauge(){const g=$('spd'),v=+$('sv').textContent||0,lim=nav?SL.v:0,base=lim||100,al=lim?v>lim+3:v>=100,n=al?Math.min(30,3+Math.round((v-base)*.8)):0,k=al+'|'+n+'|'+lim;
+  if(nav&&me&&!SL.busy&&(Date.now()-SL.t>20000||(SL.at&&dm(SL.at,me)>400))){SL.t=Date.now();SL.at=me.slice();lookupLimit()}
+  if(al&&lim&&Date.now()-(SL.w||0)>60000){SL.w=Date.now();chime('warn');navigator.vibrate&&navigator.vibrate(150);say('Speed limit '+lim,'Had laju '+lim)}
+  if(k===_gk)return;_gk=k;
+  g.classList.toggle('al',al);g.classList.toggle('hl',lim>0);$('slv').textContent=lim||'';g.setAttribute('aria-label',lim?'Speed limit '+lim+' km/h':'Speed');
   g.querySelectorAll('#spr line').forEach((l,i)=>{const j=45-i;l.style.stroke=al&&j>=0&&j<n?`hsl(${8+j*.9} 90% 52%)`:''});
-  if(al&&Date.now()-SL.t>25000){SL.t=Date.now();lookupLimit()}}
+}
 setInterval(gauge,300);
 
 // ---- trip details: swipe the bottom panel up to see the place, address and route info ----
