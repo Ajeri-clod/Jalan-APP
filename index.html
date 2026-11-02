@@ -581,6 +581,7 @@ body.alts #road{display:none!important}
 .light #res div[data-ll]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2307804a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z'/%3E%3Ccircle cx='12' cy='9.5' r='2.5'/%3E%3C/svg%3E")}
 #res div[data-ll] .rn{flex:1}#res div[data-ll] em{margin-left:auto}
 #res .addrow em{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:rgba(var(--mrgb),.12)}
+#res .srcs{margin:10px 6px 6px;font-size:12.5px;line-height:1.45;color:var(--mut2);text-align:center}#res .srcs.bad{color:var(--warn)}#res .srcs span{opacity:.7}
 body.deck #res div{border-radius:14px;border-top:0;margin-bottom:2px}body.deck #res div:active{background:var(--fill)}
 .dkhw{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 4px}
 .dkhw .dkr{flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border:1px solid var(--edge);border-radius:var(--r3);background:var(--surf)}
@@ -628,9 +629,9 @@ function fit(){var h=innerHeight,w=innerWidth,sh=w>h?Math.min(screen.width,scree
 d.style.setProperty('--gap',g+'px');d.style.setProperty('--H',(h+g)+'px');try{map.resize()}catch(e){}}
 fit();['resize','orientationchange','pageshow'].forEach(function(e){addEventListener(e,function(){fit();setTimeout(fit,200);setTimeout(fit,700)})})})();
 </script>
-<meta name="build" content="2026-11-02d">
+<meta name="build" content="2026-11-02e">
 <script>
-(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02d";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
+(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02e";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
 try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/name="build" content="([^"]+)"/);if(m&&m[1]!==B){try{sessionStorage.setItem("rl",String((+sessionStorage.getItem("rl")||0)+1))}catch(e){}location.replace(location.pathname+"?v="+m[1])}}).catch(function(){})}catch(e){}})();
 </script>
 </head>
@@ -671,7 +672,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   </div>
   <div id="res" class="glass"></div>
   <div id="dk"><div class="dkc" id="dkc"></div>
-    <div id="dkl"></div><div class="bld">Version 2026-11-02d</div></div>
+    <div id="dkl"></div><div class="bld">Version 2026-11-02e</div></div>
   <div class="chips main">
     <button class="chip glass" onclick="goSaved('home')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</button>
     <button class="chip glass" onclick="goSaved('work')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3"/></svg>Work</button>
@@ -839,18 +840,24 @@ let sq=0;
 const fmtD=d=>d<1000?Math.max(10,Math.round(d/10)*10)+' m':(d/1000).toFixed(d<10000?1:0)+' km';
 // ---- search: TomTom (via the relay) + OpenStreetMap together, ranked by how well the name matches and how close it is ----
 const ABBR={jln:'jalan',tmn:'taman',kg:'kampung',kpg:'kampung',bdr:'bandar',sg:'sungai',bt:'batu',lrg:'lorong',pjy:'putrajaya',kl:'kuala lumpur',klia:'klia',hosp:'hospital',hsp:'hospital',sek:'sekolah',sk:'sekolah kebangsaan',smk:'sekolah menengah kebangsaan',masjid:'masjid',mcd:"mcdonald's",kfc:'kfc',stn:'stesen',univ:'universiti'};
-const normQ=t=>String(t||'').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/['’`]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+const normQ=t=>String(t||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/['\u2019`.]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 const expandQ=t=>normQ(t).split(' ').map(w=>ABBR[w]||w).join(' ');
 function lev1(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,e=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue}if(++e>1)return false;if(a.length>b.length)i++;else if(b.length>a.length)j++;else{i++;j++}}return e+(a.length-i)+(b.length-j)<=1}
 // 0..1: exact > starts with > every word matched > some words / one-letter typos
 function matchScore(q,name,extra){const Q=expandQ(q),N=expandQ(name),X=expandQ(extra||'');if(!Q||!N)return 0;if(N===Q)return 1;if(N.startsWith(Q))return .92;if(N.includes(Q))return .85;
+  const Qc=Q.replace(/ /g,''),Nc=N.replace(/ /g,'');if(Qc.length>=3){if(Nc===Qc)return .97;if(Nc.startsWith(Qc))return .9;if(Nc.includes(Qc))return .83}
   const qt=Q.split(' '),nt=N.split(' '),xt=X?X.split(' '):[];let h=0;
   qt.forEach(t=>{if(nt.some(w=>w.startsWith(t)))h+=1;else if(t.length>3&&nt.some(w=>lev1(w.slice(0,t.length),t)||lev1(w,t)))h+=.75;else if(xt.some(w=>w.startsWith(t)))h+=.45});
   return .8*h/qt.length}
-let ttSearchOff=false;
-async function ttSearch(q,o,sig){if(ttSearchOff)return[];const r=await fetch(`${RELAY}/search?q=${encodeURIComponent(q)}&lat=${o.lat}&lon=${o.lng}&ta=1`,{signal:sig});
-  if(r.status===404||r.status===405){ttSearchOff=true;return[]}if(!r.ok)throw 0;
-  return ((await r.json()).results||[]).filter(x=>x.position).map(x=>{const a=x.address||{},p=x.poi||{},nm=p.name||(x.type==='Geography'?(a.municipality||a.countrySubdivision||a.freeformAddress):a.streetName&&a.streetNumber?a.streetNumber+' '+a.streetName:a.streetName||a.freeformAddress||'Place');
+let ttSearchOff=false,ttStat='';
+async function ttSearch(q,o,sig){if(ttSearchOff)return[];let r;
+  try{r=await fetch(`${RELAY}/search?q=${encodeURIComponent(q)}&lat=${o.lat}&lon=${o.lng}&ta=1`,{signal:sig})}catch(e){ttStat=e&&e.name==='AbortError'?'TomTom took too long to answer':'Could not reach the Jalan relay';throw e}
+  if(r.status===404||r.status===405){ttSearchOff=true;ttStat='The relay has no /search route yet';return[]}
+  let j=null;try{j=await r.json()}catch(e){}
+  if(!r.ok){const up=j&&j.status;ttStat=r.status===403?'The relay blocked this site (check ALLOWED_ORIGINS)':r.status===429?'Too many searches for now, try again in a minute':up?`TomTom refused the search (error ${up}${up===403||up===401?': the Search API may not be enabled for your TomTom key':''})`:'TomTom search failed (relay error '+r.status+')';throw 0}
+  if(!j||!Array.isArray(j.results)){ttSearchOff=true;ttStat='The relay has no /search route yet (redeploy relay/worker.js)';return[]}
+  ttStat='';
+  return j.results.filter(x=>x.position).map(x=>{const a=x.address||{},p=x.poi||{},nm=p.name||(x.type==='Geography'?(a.municipality||a.countrySubdivision||a.freeformAddress):a.streetName&&a.streetNumber?a.streetNumber+' '+a.streetName:a.streetName||a.freeformAddress||'Place');
     return{geometry:{coordinates:[x.position.lon,x.position.lat]},properties:{name:nm,street:p.name?(a.streetName||''):'',district:a.municipalitySubdivision||'',city:a.municipality||'',state:a.countrySubdivision||'',cat:((p.categories||[])[0]||''),brand:((p.brands||[])[0]||{}).name||'',phone:p.phone||'',src:'tt'}}})}
 async function search(v){
   const id=++sq,o=me?{lat:me[1],lng:me[0]}:map.getCenter(),from=[o.lng,o.lat],ex=expandQ(v);let fails=0;
@@ -860,6 +867,7 @@ async function search(v){
     return (await r.json()).map(x=>{const a=x.address||{},n=x.name||a.road||(x.display_name||'').split(',')[0];return{geometry:{coordinates:[+x.lon,+x.lat]},properties:{name:n,street:a.road&&a.road!==n?a.road:'',district:a.suburb||a.neighbourhood||a.city_district||'',city:a.city||a.town||a.village||a.county||'',state:a.state||'',osm_type:({node:'N',way:'W',relation:'R'})[x.osm_type]||'',osm_id:x.osm_id||''}}})};
   const tryit=async fn=>{try{return await fn()}catch(e){fails++;return[]}};
   // TomTom and OpenStreetMap at the same time; the expanded query helps OSM with "jln", "tmn", "kg" ...
+  ttStat=ttSearchOff?ttStat:'';
   let [T,O]=await Promise.all([tryit(()=>ttSearch(v,o,ac.signal)),tryit(()=>ph(ex!==normQ(v)?ex:v,true))]);clearTimeout(tmo);if(id!==sq)return;
   let all=T.concat(O);
   if(!all.length){all=await tryit(()=>nm(ex));if(id!==sq)return}
@@ -868,11 +876,13 @@ async function search(v){
     const hits=rankHits(v,list,from);window._hits=hits.map(h=>h.f);
     $('res').innerHTML=hits.map((h,i)=>{const p=h.f.properties,sub=[p.street,p.district||p.suburb,p.city||p.county,p.state].filter(Boolean).join(', ');
       return `<div onclick="pick(${i})" data-ll="${h.f.geometry.coordinates}" data-n="${esc(p.name||p.street||'Place')}" data-o="${p.osm_type||''}${p.osm_id||''}"><span class="rn">${esc(p.name||p.street||'Place')}<small>${esc(sub)}</small></span><em>${fmtD(h.d)}</em></div>`}).join('')
-      ||(fails>=2&&!list.length?'<div>Search failed. Check your internet and try again.</div>':'<div>No results. Try the street or area name, e.g. "Mydin Seri Kembangan".</div>')};
+      ||(fails>=2&&!list.length?'<div>Search failed. Check your internet and try again.</div>':'<div>No results. Try the street or area name, e.g. "Mydin Seri Kembangan".</div>');
+    const nT=hits.filter(h=>h.f.properties.src==='tt').length;
+    $('res').insertAdjacentHTML('beforeend',`<p class="srcs${ttStat?' bad':''}">${ttStat?esc(ttStat)+'. Showing OpenStreetMap results only.':`Results from TomTom (${nT}) and OpenStreetMap (${hits.length-nT})`}<br><span>Data © TomTom, © OpenStreetMap contributors</span></p>`)};
   show(all);
   // few good name matches: also look for shops/places with that name or brand within 25 km (OpenStreetMap)
   const good=all.filter(f=>matchScore(v,f.properties.name)>=.6).length;
-  if(good<3&&normQ(v).length>=3){const rx=normQ(v).replace(/[.*+?^${}()|[\]\\"]/g,'').split(' ').join('.*');
+  if(good<3&&normQ(v).length>=3){const rx=normQ(v).replace(/ /g,'').slice(0,30).split('').join('[^a-zA-Z0-9]*');
     try{const el=await ovq(`[out:json][timeout:8];(nwr(around:25000,${o.lat},${o.lng})["name"~"${rx}",i];nwr(around:25000,${o.lat},${o.lng})["brand"~"${rx}",i];);out center tags 40;`);if(id!==sq)return;
       const add=el.map(e=>{const t=e.tags||{},ll=[e.lon!=null?e.lon:e.center&&e.center.lon,e.lat!=null?e.lat:e.center&&e.center.lat];return ll[0]==null?null:{geometry:{coordinates:ll},properties:{name:t.name||t.brand||'Place',street:t['addr:street']||'',district:t['addr:suburb']||'',city:t['addr:city']||'',state:t['addr:state']||'',brand:t.brand||'',osm_type:({node:'N',way:'W',relation:'R'})[e.type]||'',osm_id:e.id}}}).filter(Boolean);
       if(add.length){all=all.concat(add);show(all)}}catch(e){}}
