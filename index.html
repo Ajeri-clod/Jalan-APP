@@ -14,9 +14,10 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#0a110e;--glass:rgba(24,34,30,.46);--glass2:rgba(14,21,18,.72);--edge:rgba(255,255,255,.13);--tx:#f4f7f3;--mut:rgba(244,247,243,.58);--mint:#bff5cf;--bad:#ff5a4d;--on:#0a110e;--fill:rgba(255,255,255,.07);--fill2:var(--fill2);--mrgb:191,245,207}
+:root{--ink:#0a110e;--glass:rgba(24,34,30,.46);--glass2:rgba(14,21,18,.72);--edge:rgba(255,255,255,.13);--tx:#f4f7f3;--mut:rgba(244,247,243,.58);--mint:#bff5cf;--bad:#ff5a4d;--on:#0a110e;--fill:rgba(255,255,255,.07);--fill2:rgba(255,255,255,.14);--mrgb:191,245,207}
 :root.light{--ink:#edf2ee;--glass:rgba(255,255,255,.7);--glass2:rgba(255,255,255,.92);--edge:rgba(15,40,28,.13);--tx:#0f1a14;--mut:rgba(15,26,20,.62);--mint:#0e9f5a;--bad:#d93025;--on:#fff;--fill:rgba(15,40,28,.06);--fill2:rgba(15,40,28,.14);--mrgb:14,159,90}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;height:100%;margin:0;padding:0;overscroll-behavior:none;background:var(--ink);color:var(--tx);font:300 16px Outfit,system-ui,sans-serif;overflow:hidden}
@@ -335,6 +336,209 @@ body.alts #spd,body.alts #rep{display:none!important}
 .cart .cph{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px;background:#fff;margin-bottom:6px}
 .cart.on .cph{outline:2px solid var(--mint);outline-offset:1px}
 .ccol button.fac{background:conic-gradient(#ecedee,#4d5a78,#d8532c,#a2a5a9,#ecedee)}
+/* =====================================================================
+   v4 design system — "Jalan Night/Day"
+   One token set, one type family, one radius scale, one motion scale.
+   ===================================================================== */
+:root{
+ --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+ --ink:#060a09;--tx:#f3f7f5;--mut:rgba(236,244,240,.7);--mut2:rgba(236,244,240,.5);
+ --mint:#a6f2c8;--mint2:#5fe0a0;--mrgb:166,242,200;--on:#04140c;--bad:#ff6257;--warn:#ffc65c;--info:#7cb8ff;
+ --glass:rgba(16,23,21,.62);--glass2:rgba(12,18,16,.84);--edge:rgba(255,255,255,.1);--edge2:rgba(255,255,255,.18);
+ --fill:rgba(255,255,255,.06);--fill2:rgba(255,255,255,.12);
+ --r1:12px;--r2:16px;--r3:22px;--r4:28px;
+ --sh1:0 1px 0 rgba(255,255,255,.06) inset,0 8px 24px -6px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.25);
+ --sh2:0 1px 0 rgba(255,255,255,.07) inset,0 24px 60px -12px rgba(0,0,0,.6),0 4px 14px rgba(0,0,0,.3);
+ --ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.34,1.36,.5,1);--t1:.16s;--t2:.28s;--t3:.5s;
+}
+:root.light{
+ --ink:#eef3f0;--tx:#0c1612;--mut:rgba(12,22,18,.68);--mut2:rgba(12,22,18,.5);
+ --mint:#07804a;--mint2:#0aa25f;--mrgb:7,128,74;--on:#fff;--bad:#d4342a;--warn:#9a6200;--info:#1f62c9;
+ --glass:rgba(255,255,255,.74);--glass2:rgba(255,255,255,.93);--edge:rgba(12,40,28,.1);--edge2:rgba(12,40,28,.18);
+ --fill:rgba(12,40,28,.05);--fill2:rgba(12,40,28,.1);
+ --sh1:0 1px 0 rgba(255,255,255,.9) inset,0 8px 24px -8px rgba(16,40,30,.22),0 2px 6px rgba(16,40,30,.08);
+ --sh2:0 1px 0 rgba(255,255,255,.9) inset,0 24px 60px -14px rgba(16,40,30,.3),0 4px 14px rgba(16,40,30,.1);
+}
+html,body{font:400 16px/1.4 var(--font);letter-spacing:-.005em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+button,input{font-family:var(--font)!important;letter-spacing:inherit}
+button{cursor:pointer;touch-action:manipulation}
+#sb input,.spin{font-weight:500!important}
+.big,#dist,.rc .rbig,.stats b,#stat .big,.hi .r,#res em,.rlab,#eta,#rem,#km{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+i{font-weight:600;letter-spacing:0;color:var(--mut)}
+
+/* focus: always visible for keyboard users, never for taps */
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:inherit}
+#q:focus-visible{outline:none}
+#sb:focus-within{border-color:rgba(var(--mrgb),.55);box-shadow:var(--sh2),0 0 0 4px rgba(var(--mrgb),.14)}
+
+/* ---- surfaces ---- */
+.glass{background:var(--glass);backdrop-filter:blur(22px) saturate(1.8);-webkit-backdrop-filter:blur(22px) saturate(1.8);border:1px solid var(--edge);box-shadow:var(--sh1)}
+.light .glass{box-shadow:var(--sh1)}
+.sheet,#turn,#res{background:var(--glass2);box-shadow:var(--sh2)}
+#vg{background:linear-gradient(rgba(4,8,7,.5),transparent 22%,transparent 62%,rgba(4,8,7,.55))}
+.light #vg{background:linear-gradient(rgba(238,243,240,.6),transparent 20%,transparent 64%,rgba(238,243,240,.5))}
+.grab{width:36px;height:5px;border-radius:5px;background:var(--edge2);margin:0 auto 12px}
+.ic{stroke-width:1.75}
+
+/* ---- top: search + chips ---- */
+#sb{height:56px;border-radius:var(--r3);padding:0 16px 0 18px;gap:12px;box-shadow:var(--sh2);transition:border-color var(--t2),box-shadow var(--t2)}
+#sb .sicn{color:var(--mint);width:20px;height:20px;stroke-width:2.2}
+#sb input{font-size:17px}
+#sb input::placeholder{color:var(--mut);font-weight:500}
+.circ{width:56px;height:56px;border-radius:var(--r3);box-shadow:var(--sh2)}
+#bar .circ .ic{width:22px;height:22px}
+.chips{gap:8px;margin-top:10px;padding:2px 2px 6px;margin-left:-2px;margin-right:-2px}
+.chips.main .chip{box-shadow:0 3px 10px -3px rgba(0,0,0,.35)}.light .chips.main .chip{box-shadow:0 3px 10px -4px rgba(16,40,30,.25)}
+.chip{height:42px;padding:0 16px 0 13px;border-radius:var(--r2);font-weight:600;font-size:14px;gap:8px;color:var(--tx)}
+.chip .ic{width:18px;height:18px;color:var(--mint);stroke-width:2}
+.back{width:44px;height:44px;margin-left:-12px}
+.clr{width:32px;height:32px;margin-right:-6px;background:var(--fill2)}
+#res{border-radius:var(--r3);margin-top:10px}
+#res div{padding:14px 18px;font-size:16px;font-weight:600;border-top:1px solid var(--edge);transition:background var(--t1)}
+#res div:active{background:var(--fill)}
+#res small{font-weight:400;font-size:13.5px;color:var(--mut);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#res .rn{flex:1;min-width:0}
+#res em{font-weight:600;font-size:14px;color:var(--mut)}
+/* search skeleton */
+#res .sk{cursor:default;pointer-events:none}
+.skl{display:block;height:13px;width:62%;border-radius:7px;background:linear-gradient(90deg,var(--fill) 25%,var(--fill2) 50%,var(--fill) 75%);background-size:300% 100%;animation:shim 1.1s linear infinite}
+.skl.s{width:40%;height:10px;margin-top:8px}
+@keyframes shim{from{background-position:100% 0}to{background-position:0 0}}
+
+/* ---- search deck ---- */
+.dkc{gap:8px;margin:16px -14px 8px 0}
+.dkc button{min-width:84px;padding:14px 6px 12px;border-radius:var(--r2);font-size:13px;font-weight:600;gap:8px;background:var(--fill);border:1px solid var(--edge)}
+.dkc button:active{background:var(--fill2)}
+.dkc .ic{width:24px;height:24px;stroke-width:1.9}
+.dkr{gap:14px;padding:13px 4px}
+.dkr .ic{width:40px;height:40px;padding:9px;border-radius:var(--r1);background:rgba(var(--mrgb),.12);stroke-width:1.9}
+.dkr b{font-weight:600;font-size:16.5px}
+.dkr small{font-size:13.5px}
+.dkh,.sgh{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut2);margin:22px 4px 6px}
+.bld{font-size:11.5px;color:var(--mut2)}
+
+/* ---- route sheet ---- */
+.sheet{border-radius:var(--r4);padding:10px 18px 18px}
+.hh b{font-weight:700;font-size:20px;letter-spacing:-.02em}
+.hh small{font-size:13.5px;margin-top:2px;display:block}
+.hh .sq,.ih .sq{width:44px;height:44px;border-radius:50%;background:var(--fill);border:1px solid var(--edge)}
+#cards{padding:5px 5px 0;margin:0 -5px}
+.rc{border-radius:var(--r3);padding:16px 16px 14px;margin-bottom:10px;border:1.5px solid var(--edge);background:var(--fill)}
+.rc.sel{border-color:rgba(var(--mrgb),.75);background:rgba(var(--mrgb),.08);box-shadow:0 0 0 4px rgba(var(--mrgb),.08)}
+.rc .rbig{font-weight:700;font-size:32px;letter-spacing:-.035em}
+.rc .rbig i{font-size:.46em;margin-left:3px;margin-right:4px}
+.rc.sel .rbig{color:var(--mint)}
+.rc .rsub{font-size:14.5px;font-weight:600;margin-top:4px}
+.rc .rvia{font-size:13.5px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc .go{height:48px;border-radius:var(--r2);padding:0 22px;font-weight:700;font-size:16px;letter-spacing:.01em}
+.rc:not(.sel) .go{background:var(--fill2)}
+.tags{gap:6px;margin-top:10px}
+.tag{border-radius:8px;padding:4px 9px;font-size:12.5px;font-weight:600}
+.tag.toll{color:var(--warn)}.light .tag.toll{color:#8a5600}
+.rlab{padding:7px 12px;border-radius:12px;font-weight:700;font-size:13.5px;box-shadow:var(--sh1)}
+.rlab.cur{box-shadow:0 6px 20px rgba(var(--mrgb),.35)}
+
+/* ---- buttons ---- */
+.cta{gap:10px}
+.cta button{height:56px;border-radius:var(--r3);font-weight:600;font-size:16px}
+.cta .go{font-weight:700;font-size:17px;box-shadow:0 10px 30px -8px rgba(var(--mrgb),.55)}
+.cta .end{background:var(--bad);border-color:var(--bad);color:#fff!important;box-shadow:0 10px 30px -10px rgba(255,98,87,.6)}
+.cta button:not(.go){color:var(--tx)}
+.cta .off{opacity:.6}
+button:active{transform:scale(.97)}
+
+/* ---- turn-by-turn card ---- */
+#turn{border-radius:var(--r4);padding:14px 18px 14px 14px;gap:16px;flex-wrap:wrap;overflow:hidden}
+#arr{width:72px;height:72px;border-radius:var(--r3);background:var(--mint);box-shadow:0 10px 28px -6px rgba(var(--mrgb),.6)}
+#arr .mv{width:46px;height:46px;stroke-width:2.6;color:var(--on)}
+#dist{font-weight:800;font-size:40px;letter-spacing:-.04em}
+#dist i{font-size:.45em}
+#ins{font-weight:600;font-size:18px;line-height:1.3;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#then{display:none;flex-basis:calc(100% + 32px);align-items:center;gap:8px;margin:2px -18px -14px -14px;padding:9px 16px;background:var(--fill);border-top:1px solid var(--edge);font-size:14px;font-weight:600;color:var(--mut)}
+#then i{display:grid;margin:0;color:var(--tx)}#thn{color:var(--tx);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#then .mv{width:20px;height:20px;stroke-width:2.4}
+#turn.th #then{display:flex}
+
+/* ---- bottom trip panel ---- */
+#bot{padding-top:8px}
+#stat{margin:0 0 12px}
+#stat>div{flex:1}
+#stat .big{font-weight:700;font-size:30px;letter-spacing:-.03em}
+#stat>div:first-child .big{color:var(--mint)}
+#stat .lbl{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mut2);margin-top:2px}
+.prog{height:4px;border-radius:4px;background:var(--fill2);overflow:hidden;margin:0 2px 16px}
+#pgb{display:block;height:100%;background:linear-gradient(90deg,var(--mint2),var(--mint));transform-origin:0 50%;transform:scaleX(0);transition:transform 1s var(--ease)}
+.bdn{font-weight:700;font-size:22px;letter-spacing:-.02em}
+.bdb button{border-radius:var(--r2);font-weight:600;height:48px}
+
+/* ---- floating controls ---- */
+#stk .circ,#rep .circ{border-radius:var(--r2)}
+#stk .circ{width:52px;height:52px}
+#rep .circ{width:48px;height:48px}
+#rcb .ic{width:22px;height:22px}
+#rc{border-radius:var(--r2);padding:12px 18px 12px 14px;font-weight:700;font-size:15px;box-shadow:var(--sh2)}
+.rpo{height:48px;border-radius:var(--r2)}.rpo b{font-weight:600;font-size:15px}
+.rpo span{border-radius:10px}
+#rpw.open #rpb{box-shadow:0 8px 24px -6px rgba(var(--mrgb),.6)}
+.pin{border-radius:14px;box-shadow:var(--sh1)}
+#alr{border-radius:var(--r3);box-shadow:var(--sh2)}
+#alI{border-radius:14px}
+#alr b{font-weight:700;font-size:16px}
+.tst{border-radius:var(--r2);font-weight:600;font-size:14.5px;box-shadow:var(--sh2);background:var(--glass2)}
+
+/* ---- location marker + destination pin ---- */
+.me{width:30px;height:30px;background:#fff;border:3px solid #fff;box-shadow:0 0 0 7px rgba(var(--mrgb),.22),0 6px 16px rgba(0,0,0,.45)}
+.me:after{width:14px;height:16px;margin:-8px 0 0 -7px;background:#0b6b42}
+.light .me{box-shadow:0 0 0 7px rgba(var(--mrgb),.18),0 6px 16px rgba(0,0,0,.3)}
+.dpin{width:24px;height:24px;border:5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 8px 20px rgba(0,0,0,.4)}
+
+/* ---- place card + details ---- */
+.ih b{font-weight:700;font-size:26px;letter-spacing:-.025em}
+#ia{font-size:14.5px}
+.iact{gap:8px}
+.iact button{border-radius:var(--r2);font-size:13px;font-weight:600;padding:14px 4px 12px}
+.ipc{border-radius:var(--r2);font-size:15px}
+.ds h4{font-weight:700;font-size:18px}
+.dcta button{border-radius:var(--r3);font-weight:700}
+
+/* ---- settings ---- */
+#settings,#det{background:var(--ink)}
+.sth b{font-weight:800;font-size:28px;letter-spacing:-.03em}
+.sth .circ{width:44px;height:44px;border-radius:50%}
+.sg{margin:26px 0 8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut2)}
+.srow{padding:12px 22px;gap:14px;border-top:1px solid var(--edge)}
+.sic{width:36px;height:36px;border-radius:10px}.sic .ic{width:20px;height:20px;stroke-width:2}
+.stx b{font-weight:600;font-size:16px}.stx small{font-size:13px}
+.sw{width:51px;height:31px;border-radius:16px}
+.sw:after{width:27px;height:27px;left:2px;top:2px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.sw.on:after{transform:translateX(20px);background:#fff}
+.seg{border-radius:12px;padding:3px}
+.seg button{height:38px;border-radius:9px;font-size:14.5px;font-weight:600}
+.seg button.on{box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.cart{border-radius:var(--r2)}.cart b{font-weight:600;font-size:13.5px}
+.stl{border-radius:var(--r2)}.stl b{font-weight:600}
+#styl,#hist,#info{border-radius:var(--r4)}
+.hi b{font-weight:600;font-size:16px}
+.hi .r{font-weight:700;font-size:15px}
+
+/* ---- speedometer ---- */
+#spd{background:radial-gradient(circle at 35% 25%,#2b3a37,#121a18 70%);border:2px solid rgba(255,255,255,.12);box-shadow:var(--sh2)}
+.light #spd{background:radial-gradient(circle at 35% 25%,#fff,#e7eeea 70%);border-color:rgba(12,40,28,.12)}
+.light #spd .sn b,.light #spd .sn small{color:#0c1612}
+.light #spr line{stroke:rgba(12,40,28,.3)}
+#spd .sn b{font:700 30px/1 var(--font);letter-spacing:-.04em}
+#spd .sn small{font-weight:600;font-size:10.5px;letter-spacing:.04em;opacity:.7}
+
+/* ---- intro wordmark ---- */
+#wd{font:300 30px var(--font);letter-spacing:.34em}
+.me.car{border:0}
+#turn>div:nth-child(2){flex:1;min-width:0}
+
+/* ---- motion: respect the system setting ---- */
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media(max-width:380px){#sb{height:52px}.circ{width:52px;height:52px}#dist{font-size:34px}#ins{font-size:16.5px}#arr{width:62px;height:62px}#arr .mv{width:40px;height:40px}.rc .rbig{font-size:28px}#stat .big{font-size:26px}}
+@media(max-height:640px){#stat .big{font-size:26px}}
+@media(orientation:landscape) and (max-height:520px){#dist{font-size:32px}#arr{width:58px;height:58px}#stat .big{font-size:24px}}
 </style>
 <script>
 (function(){var d=document.documentElement,st=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches),ios=/iPhone|iPad|iPod/.test(navigator.userAgent);
@@ -342,9 +546,9 @@ function fit(){var h=innerHeight,w=innerWidth,sh=w>h?Math.min(screen.width,scree
 d.style.setProperty('--gap',g+'px');d.style.setProperty('--H',(h+g)+'px');try{map.resize()}catch(e){}}
 fit();['resize','orientationchange','pageshow'].forEach(function(e){addEventListener(e,function(){fit();setTimeout(fit,200);setTimeout(fit,700)})})})();
 </script>
-<meta name="build" content="2026-10-31c">
+<meta name="build" content="2026-11-02a">
 <script>
-(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-10-31c";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
+(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02a";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
 try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/name="build" content="([^"]+)"/);if(m&&m[1]!==B){try{sessionStorage.setItem("rl",String((+sessionStorage.getItem("rl")||0)+1))}catch(e){}location.replace(location.pathname+"?v="+m[1])}}).catch(function(){})}catch(e){}})();
 </script>
 </head>
@@ -385,7 +589,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   </div>
   <div id="res" class="glass"></div>
   <div id="dk"><div class="dkc" id="dkc"></div>
-    <div id="dkl"></div><div class="bld">Version 2026-10-31c</div></div>
+    <div id="dkl"></div><div class="bld">Version 2026-11-02a</div></div>
   <div class="chips main">
     <button class="chip glass" onclick="goSaved('home')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</button>
     <button class="chip glass" onclick="goSaved('work')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3"/></svg>Work</button>
@@ -426,10 +630,10 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   <div id="hl"></div>
 </div>
 
-<div id="turn" class="fixed glass"><div id="arr">↑</div><div><div id="dist"></div><div id="ins"></div></div></div>
+<div id="turn" class="fixed glass" role="status" aria-live="polite"><div id="arr" aria-hidden="true"></div><div><div id="dist"></div><div id="ins"></div></div><div id="then" aria-hidden="true"><span>Then</span><i id="thi"></i><span id="thn"></span></div></div>
 <div id="spot" class="fixed glass sheet"></div>
 <div id="ttl" onclick="if(event.target===this)ttlClose()"><div class="ttc glass"><div class="lbl">Name this place</div><small id="tts" class="spnote"></small><input id="tti" class="spin" maxlength="40" placeholder="Name" autocomplete="off"><div class="cta"><button style="flex:1" onclick="ttlClose()">Cancel</button><button class="go" onclick="ttlSave()">Save</button></div></div></div>
-<div id="tst" class="glass tst"></div>
+<div id="tst" class="glass tst" role="status" aria-live="polite"></div>
 <div id="alr" class="glass" role="alert"><span id="alI"></span><div><b id="alT"></b><small id="alS"></small></div></div>
 <div id="stk" class="fixed">
   <button class="circ glass" id="spb" onclick="openSpot()" aria-label="Spotify"></button>
@@ -458,6 +662,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
     <div><div class="big" id="rem">--</div><div class="lbl">Time left</div></div>
     <div><div class="big" id="km">--</div><div class="lbl">Distance</div></div>
   </div>
+  <div class="prog" aria-hidden="true"><span id="pgb"></span></div>
   <div id="bdet"></div>
   <div class="cta"><button class="go end" onclick="stopNav()">End trip</button><button onclick="mute=!mute;this.classList.toggle('off',mute);$('vt').textContent=mute?'Voice off':'Voice on'"><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6"/></svg><span id="vt">Voice on</span></button></div>
 </div>
@@ -497,7 +702,7 @@ map.on('touchstart',e=>{if(e.points&&e.points.length>1)return;pt=setTimeout(()=>
 
 const el=document.createElement('div');el.className='me';
 meMk=new maplibregl.Marker({element:el,rotationAlignment:'map',pitchAlignment:'map'});
-navigator.geolocation.watchPosition(onPos,()=>alert('Turn on location access for this site.'),{enableHighAccuracy:true,maximumAge:1000});
+navigator.geolocation.watchPosition(onPos,e=>toast(e&&e.code===1?'Location is off. Allow location access for Jalan to navigate.':'Finding your location…',6000),{enableHighAccuracy:true,maximumAge:1000});
 
 let snapI=0,snapRt=null;
 function snapRoute(pt){const rt=nav&&routes[sel];if(!rt)return null;const path=rt.geometry.coordinates;if(path.length<2)return null;
@@ -542,7 +747,9 @@ function lockCam(o){camOn=false;map.easeTo(Object.assign({zoom:P.d3?18.4:18.2,pi
 // ---- search (Photon, limited to Malaysia) ----
 function cancelSearch(){clearTimeout(qt);sq++;nId++}
 $('q').addEventListener('input',e=>{clearTimeout(qt);const v=e.target.value.trim();if(v.length<3){cancelSearch();$('res').innerHTML='';return}
+  if(!$('res').children.length||$('res').querySelector('.sk'))$('res').innerHTML='<div class="sk"><span class="rn"><span class="skl"></span><span class="skl s"></span></span></div>'.repeat(3);
   qt=setTimeout(()=>search(v),350)});
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter'){const f=$('res').querySelector('[onclick]');if(f&&!f.classList.contains('sk')){e.preventDefault();f.click()}}});
 let sq=0;
 const fmtD=d=>d<1000?Math.max(10,Math.round(d/10)*10)+' m':(d/1000).toFixed(d<10000?1:0)+' km';
 async function search(v){
@@ -570,7 +777,7 @@ function pick(i){const f=window._hits[i],p=f.properties,ll={lng:f.geometry.coord
 
 // ---- routing (OSRM) ----
 function setDest(ll,name,sub){
-  closeDeck();closeInfo(true);dest=[ll.lng,ll.lat];destName=name||'';if(name&&name!=='Dropped pin')addRecent(name,sub||'',[ll.lng,ll.lat]);if(!me){alert('Waiting for your location...');return}
+  closeDeck();closeInfo(true);dest=[ll.lng,ll.lat];destName=name||'';if(name&&name!=='Dropped pin')addRecent(name,sub||'',[ll.lng,ll.lat]);if(!me){toast('Waiting for your location…');return}
   if(destMk)destMk.remove();destMk=new maplibregl.Marker({element:pinEl()}).setLngLat(dest).addTo(map);
   $('q').value=name||'';$('res').innerHTML='';plan();
 }
@@ -608,7 +815,7 @@ async function fetchRoutes(alt){
   if(all.length<3&&all[0].distance>1200){try{(await viaRoutes(all)).forEach(r=>all.push(r))}catch(e){}all.sort((a,b)=>a.duration-b.duration)}
   return all.slice(0,4)}
 async function plan(){
-  try{routes=await fetchRoutes(true);sel=0;draw()}catch(e){alert('No route found. '+e.message)}
+  try{routes=await fetchRoutes(true);sel=0;draw()}catch(e){toast('No route found. Try a nearby landmark.',5000)}
 }
 function clearLayers(){for(let i=0;i<4;i++){if(map.getLayer('g'+i))map.removeLayer('g'+i);if(map.getLayer('k'+i))map.removeLayer('k'+i);if(map.getLayer('l'+i))map.removeLayer('l'+i);if(map.getSource('r'+i))map.removeSource('r'+i)}}
 // Toll estimate (Class 1 car) from published Malaysian highway rates. It is an ESTIMATE:
@@ -706,8 +913,14 @@ function text(s){const m=s.maneuver,n=s.name?' onto '+s.name:'',d=m.modifier||''
     case 'roundabout':case 'rotary':case 'exit roundabout':return m.exit?'At the roundabout, take exit '+m.exit+n:'Enter the roundabout'+n;
     default:return 'Continue'+n}}
 const S=()=>routes[sel].legs[0].steps;
-function arrow(s){const m=s.maneuver;if(m.type==='arrive')return '⚑';if(/roundabout|rotary/.test(m.type))return '↻';
-  return {'left':'↰','sharp left':'↰','slight left':'↖','right':'↱','sharp right':'↱','slight right':'↗','uturn':'↶'}[m.modifier]||'↑'}
+function arrow(s){const m=s.maneuver;if(m.type==='arrive')return 'arrive';if(/roundabout|rotary/.test(m.type))return 'rbt';
+  if(m.type==='merge')return 'merge';return {'left':'left','sharp left':'sleft','slight left':'bleft','right':'right','sharp right':'sright','slight right':'bright','uturn':'uturn'}[m.modifier]||'straight'}
+// turn icons (one stroke family, drawn on a 24 grid)
+const MV={straight:'<path d="M12 20V5M6.5 10.5L12 5l5.5 5.5"/>',left:'<path d="M15 20v-7a4 4 0 00-4-4H5M9 5L5 9l4 4"/>',right:'<path d="M9 20v-7a4 4 0 014-4h6M15 5l4 4-4 4"/>',
+ bleft:'<path d="M15 20v-6.5L8 6.5M7.5 12.5V6h6.5"/>',bright:'<path d="M9 20v-6.5l7-7M16.5 12.5V6H10"/>',sleft:'<path d="M15 20V5L7 13M7 7.5V13h5.5"/>',sright:'<path d="M9 20V5l8 8M17 7.5V13h-5.5"/>',
+ uturn:'<path d="M16 20V9.5a4 4 0 00-8 0V16M4.5 12.5L8 16l3.5-3.5"/>',merge:'<path d="M12 20v-7L6 5M12 13l6-8M14 5h4v4"/>',
+ rbt:'<circle cx="12" cy="10" r="4"/><path d="M12 20v-6M14.8 7.2L19 3M15 3h4v4"/>',arrive:'<path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'};
+const mvSvg=k=>`<svg class="ic mv" viewBox="0 0 24 24">${MV[k]||MV.straight}</svg>`;
 const VSLOTS=[
  {id:'en-gb-f',n:'Olivia',d:'Female, British English',lang:'en-GB',g:'f'},
  {id:'en-us-m',n:'Ethan',d:'Male, American English',lang:'en-US',g:'m'},
@@ -753,7 +966,7 @@ async function startNav(){
   if(nav){switchRoute();return}
   nav=true;free=false;hdg=null;$('rc').style.display='none';document.body.classList.add('navmode');idx=Math.min(1,S().length-1);$('sheet').style.display='none';$('top').style.display='none';$('turn').style.display='flex';$('bot').style.display='block';$('spd').style.display='flex';
   clearLabels();for(let i=0;i<4;i++)if(i!==sel&&map.getLayer('l'+i))map.removeLayer('l'+i);
-  say('Starting navigation','Memulakan navigasi');window._said=-1;
+  say('Starting navigation','Memulakan navigasi');window._said=-1;window._said1=-1;
   const b0=S()[0].maneuver.bearing_after;if(b0!=null)dispB=tgtB=b0;snapRt=null;{const sn=snapRoute(me);if(sn){disp=sn.p.slice();fix={p:sn.p,t:performance.now(),e:0,n:0};dispB=tgtB=sn.b}}askNotif();
   trip={id:Date.now(),at:Date.now(),name:destName||'Destination',to:dest.slice(),m:0};saveTrip(false);
   lockCam({center:me,bearing:dispB,duration:1600});track();
@@ -765,12 +978,14 @@ function track(){
   const st=S(),s=st[idx];if(!s||!me)return;
   const d=dm(me,s.maneuver.location);
   $('dist').innerHTML=d>=1000?(d/1000).toFixed(1)+'<i>km</i>':Math.round(d/10)*10+'<i>m</i>';
-  if($('ins').textContent!==text(s)){$('arr').classList.remove('bump');void $('arr').offsetWidth;$('arr').classList.add('bump')}$('ins').textContent=text(s);$('arr').textContent=arrow(s);
+  if($('ins').textContent!==text(s)){$('arr').classList.remove('bump');void $('arr').offsetWidth;$('arr').classList.add('bump')}$('ins').textContent=text(s);if($('arr')._k!==arrow(s)){$('arr')._k=arrow(s);$('arr').innerHTML=mvSvg(arrow(s))}
+  {const nx=st[idx+1];const th=nx&&s.maneuver.type!=='arrive'&&s.distance<450;$('turn').classList.toggle('th',!!th);if(th){$('thi').innerHTML=mvSvg(arrow(nx));$('thn').textContent=nx.maneuver.type==='arrive'?'arrive at '+(destName||'destination'):(nx.name||'')}}
+  if(d<1300&&d>700&&window._said1!==idx&&st[idx-1]&&st[idx-1].distance>1800&&s.maneuver.type!=='arrive'){window._said1=idx;say('In 1 kilometre, '+text(s),'Dalam 1 kilometer, '+textMs(s))}
   if(d<250&&window._said!==idx){window._said=idx;{const dd=Math.max(50,Math.round(d/50)*50),arr=s.maneuver.type==='arrive';say(arr?'You will arrive soon':'In '+dd+' metres, '+text(s),arr?'Anda akan tiba tidak lama lagi':'Dalam '+dd+' meter, '+textMs(s))}}
   if(d<30){if(s.maneuver.type==='arrive'){say('You have arrived','Anda telah tiba');notify('You have arrived',destName||'Destination','arrive');stopNav(true);return}idx++;return track()}
   let sec=st[idx-1]?st[idx-1].duration*Math.min(1,d/Math.max(st[idx-1].distance,1)):0,m=d;
   for(let i=idx;i<st.length;i++){sec+=st[i].duration;m+=st[i].distance}
-  window._remSec=sec;$('rem').innerHTML=Math.max(1,Math.round(sec/60))+'<i>min</i>';$('km').innerHTML=(m/1000).toFixed(1)+'<i>km</i>';
+  window._remSec=sec;$('rem').innerHTML=Math.max(1,Math.round(sec/60))+'<i>min</i>';$('km').innerHTML=(m/1000).toFixed(1)+'<i>km</i>';{const T=routes[sel].distance||1;$('pgb').style.transform='scaleX('+Math.max(0,Math.min(1,1-m/T)).toFixed(3)+')'}
   $('eta').textContent=new Date(Date.now()+sec*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
   const path=routes[sel].geometry.coordinates;let off=1e9;for(let i=0;i<path.length;i+=2){off=Math.min(off,dm(me,path[i]))}
   if(off>90&&Date.now()-lastRe>15000){lastRe=Date.now();say('Rerouting','Mengira semula laluan');
@@ -779,7 +994,7 @@ function track(){
 
 // ---- saved places & reports ----
 function goSaved(k){const p=store.get('saved_'+k);if(!p){$('q').focus();setSlot(k);return}setDest({lng:p[0],lat:p[1]},store.get('savedn_'+k)||k)}
-function saveDest(k){if(dest){store.set('saved_'+k,dest);store.set('savedn_'+k,destName||'Saved place');alert('Saved as '+k)}}
+function saveDest(k){if(dest){store.set('saved_'+k,dest);store.set('savedn_'+k,destName||'Saved place');toast('Saved as '+(k==='home'?'Home':'Work'))}}
 function report(t){if(!me)return;const a=store.get('reports')||[];a.push({t,ll:me,at:Date.now(),al:1});store.set('reports',a);loadReports();notify(({police:'Police',accident:'Accident',hazard:'Hazard',camera:'Camera'}[t]||t)+' reported','Marked at your location','warn');say('Reported '+t,'Dilaporkan: '+({police:'polis',accident:'kemalangan',hazard:'bahaya',camera:'kamera'}[t]||t))}
 function loadReports(){
   pins.forEach(p=>p.remove());pins=[];
@@ -909,7 +1124,7 @@ function setSat(v){P.sv=v;P.sat=true;store.set('prefs',P);applyMap();closeStyl()
 function setMapStyle(id){const s=STY.find(x=>x.id===id);if(!s)return;
   if(s.key&&!P.keys[s.key]){const k=prompt('Paste your free '+s.by+' key (saved on this phone only):');if(!k||!k.trim())return;P.keys[s.key]=k.trim()}
   P.sat=false;closeStyl();P.st=id;store.set('prefs',P);applyMap()}
-map.on('error',e=>{const s=curSty(),m=e&&e.error?(e.error.status||'')+' '+(e.error.message||''):'';if(s.key&&/401|403|nauthor|orbidden/i.test(m)){P.keys[s.key]='';alert('That key was not accepted. Going back to Liberty.');setMapStyle('liberty')}});
+map.on('error',e=>{const s=curSty(),m=e&&e.error?(e.error.status||'')+' '+(e.error.message||''):'';if(s.key&&/401|403|nauthor|orbidden/i.test(m)){P.keys[s.key]='';toast('That key was not accepted. Back to Liberty.',5000);setMapStyle('liberty')}});
 /* ---------- bottom-right buttons: Spotify, compass, recenter ---------- */
 function locate(){if(nav){hdg=null;recenter()}else if(me)map.easeTo({center:me,zoom:Math.max(map.getZoom(),16),duration:700})}
 function placeStk(){const st=$('stk'),B=document.body.getBoundingClientRect().bottom,vis=i=>{const e=$(i);return e&&e.getBoundingClientRect().height>0?e:null};
@@ -1149,9 +1364,9 @@ function closeInfo(skip){if($('info').style.display!=='block')return;iq++;$('inf
   if(!skip){map.easeTo({padding:{top:0,bottom:0,left:0,right:0},duration:500});if(routes.length&&!nav)$('sheet').style.display='block'}}
 function infoSave(){const a=store.get('favs')||[],k=favKey(),i=a.findIndex(x=>x.k===k);
   if(i>=0)a.splice(i,1);else a.unshift({k,n:inf.name,s:(inf.addr||'').split(',').slice(0,3).join(','),ll:inf.ll});store.set('favs',a.slice(0,50));renderInfo()}
-function infoCall(){const t=inf.tags,p=t.phone||t['contact:phone'];if(p)location.href='tel:'+p.split(';')[0].replace(/\s/g,'');else alert('No phone number is listed for this place.')}
+function infoCall(){const t=inf.tags,p=t.phone||t['contact:phone'];if(p)location.href='tel:'+p.split(';')[0].replace(/\s/g,'');else toast('No phone number is listed for this place.')}
 function infoShare(){const u=`https://www.openstreetmap.org/?mlat=${inf.ll[1]}&mlon=${inf.ll[0]}#map=18/${inf.ll[1]}/${inf.ll[0]}`;
-  if(navigator.share)navigator.share({title:inf.name,text:inf.name,url:u}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(u).then(()=>alert('Link copied'))}
+  if(navigator.share)navigator.share({title:inf.name,text:inf.name,url:u}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(u).then(()=>toast('Link copied'))}
 function infoRoutes(){const o=inf;closeDet();closeInfo(true);setDest({lng:o.ll[0],lat:o.ll[1]},o.name,(o.addr||'').split(',').slice(0,2).join(','))}
 function openDet(){const t=inf.tags,w=parseOH(t.opening_hours),ph=t.phone||t['contact:phone'],web=t.website||t['contact:website'];let h='';
   if(w){const s=ohState(w),names=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],f=m=>String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
@@ -1279,7 +1494,7 @@ function renderBdet(){if(!bd||!routes.length)return;const t=bd.tags||{},w=parseO
   if(w){const s=ohState(w);tg+=`<span class="tag ${s[1]}">${s[0]}</span>`}
   tg+=tl?`<span class="tag toll">Toll ≈ RM ${tl.cost.toFixed(2)}</span>`:'<span class="tag">Toll-free</span>';
   $('bdet').innerHTML=`<div class="bdn">${esc(bd.name)}</div><div class="bda">${esc(bd.addr||'Looking up the address...')}</div><div id="bdt">${tg}</div><div class="bdv">Via ${esc(r?via(r):'')}</div><div class="bdb">${ph?`<button onclick="location.href='tel:${esc(ph.split(';')[0].replace(/\s/g,''))}'">Call</button>`:''}<button onclick="shareEta()">Share ETA</button></div>`}
-function shareEta(){const t=`I'm heading to ${bd.name} and should arrive around ${$('eta').textContent}.`;if(navigator.share)navigator.share({text:t}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>alert('Copied'))}
+function shareEta(){const t=`I'm heading to ${bd.name} and should arrive around ${$('eta').textContent}.`;if(navigator.share)navigator.share({text:t}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast('Copied'))}
 
 // ---- change route while driving (button under Recenter) ----
 let altOpen=false,altPrev=null;
@@ -1294,11 +1509,11 @@ async function openAlts(){
     draw(false);$('bot').style.display='none';$('sheet').style.display='block';$('rsm').textContent=routes.length+' routes from where you are';
     requestAnimationFrame(()=>{const bn=new maplibregl.LngLatBounds();routes.forEach(r=>r.geometry.coordinates.forEach(c=>bn.extend(c)));
       map.fitBounds(bn,{padding:side()?{top:30,bottom:30,left:30,right:panelW()}:{top:150,bottom:Math.round($('sheet').offsetHeight+30),left:30,right:30},pitch:0,bearing:0,duration:900})})
-  }catch(e){b.classList.remove('on');alert('Could not load other routes. Try again.')}}
+  }catch(e){b.classList.remove('on');toast('Could not load other routes. Try again.')}}
 function closeAlts(){if(!altOpen)return;altOpen=false;document.body.classList.remove('alts');$('altb').classList.remove('on');$('sheet').style.display='none';$('bot').style.display='block';
   if(altPrev){routes=altPrev.routes;sel=altPrev.sel;altPrev=null}clearLayers();draw(false);navOnly();recenter()}
 function switchRoute(){altOpen=false;altPrev=null;document.body.classList.remove('alts');$('altb').classList.remove('on');$('sheet').style.display='none';$('bot').style.display='block';
-  clearLabels();navOnly();idx=Math.min(1,S().length-1);window._said=-1;lastRe=Date.now();say('Route changed','Laluan ditukar');recenter();track();renderBdet()}
+  clearLabels();navOnly();idx=Math.min(1,S().length-1);window._said=-1;window._said1=-1;lastRe=Date.now();say('Route changed','Laluan ditukar');recenter();track();renderBdet()}
 function sheetX(){if(nav)closeAlts();else clearRoute()}
 
 // ---- live traffic (TomTom): traffic-aware routes + ETAs, traffic colours on the map ----
@@ -1377,6 +1592,16 @@ function warnAhead(){if(!me)return;const a=store.get('reports')||[];let ch=false
     r.al=1;ch=true;const n=({police:'Police',accident:'Accident',hazard:'Hazard',camera:'Speed camera'}[r.t]||'Warning');
     notify(n+' ahead','About '+Math.max(50,Math.round(d/50)*50)+' m ahead','warn');say(n+' ahead','Ada '+({police:'polis',accident:'kemalangan',hazard:'bahaya',camera:'kamera'}[r.t]||'amaran')+' di hadapan')});
   if(ch)store.set('reports',a)}
+// ---- Escape key closes the top-most panel (keyboard / desktop) ----
+addEventListener('keydown',e=>{if(e.key!=='Escape')return;
+  if($('ttl').classList.contains('on'))return ttlClose();
+  if($('det').classList.contains('on'))return closeDet();
+  if($('settings').classList.contains('on'))return closeSet();
+  if($('styl').style.display==='block')return closeStyl();
+  if($('spot').style.display==='block'&&!$('spot').classList.contains('off'))return closeSpot();
+  if(document.body.classList.contains('deck'))return closeDeck();
+  if($('info').style.display==='block')return closeInfo();
+  if($('hist').style.display==='block')return closeHist()});
 // ---- one Report button ----
 function toggleRep(){const w=$('rpw'),o=!w.classList.contains('open');w.classList.toggle('open',o);$('rpb').setAttribute('aria-expanded',o);clearTimeout(w._t);if(o)w._t=setTimeout(closeRep,7000)}
 function closeRep(){$('rpw').classList.remove('open');$('rpb').setAttribute('aria-expanded','false')}
