@@ -553,6 +553,74 @@ button:active{transform:scale(.97)}
 @media(max-width:380px){#sb{height:52px}.circ{width:52px;height:52px}#dist{font-size:34px}#ins{font-size:16.5px}#arr{width:62px;height:62px}#arr .mv{width:40px;height:40px}.rc .rbig{font-size:28px}#stat .big{font-size:26px}}
 @media(max-height:640px){#stat .big{font-size:26px}}
 @media(orientation:landscape) and (max-height:520px){#dist{font-size:32px}#arr{width:58px;height:58px}#stat .big{font-size:24px}}
+
+/* =====================================================================
+   v5 polish — driving, search & places, route choice, settings
+   ===================================================================== */
+:root{--surf:rgba(255,255,255,.055)}:root.light{--surf:#fff}
+/* driving: the card flips to the accent colour in the last ~120 m so the turn reads at a glance */
+#turn{transition:background var(--t3) var(--ease),color var(--t3)}
+#turn.now{background:var(--mint);color:var(--on);border-color:var(--mint);box-shadow:0 18px 50px -12px rgba(var(--mrgb),.6)}
+#turn.now #arr{background:var(--on);box-shadow:none}#turn.now #arr .mv{color:var(--mint)}
+#turn.now #dist i,#turn.now #then{color:rgba(4,20,12,.7)}.light #turn.now #dist i,.light #turn.now #then{color:rgba(255,255,255,.8)}
+#turn.now #then,#turn.now #lanes{background:rgba(0,0,0,.1);border-color:rgba(0,0,0,.08)}#turn.now #thn,#turn.now #then i{color:inherit}
+#turn.now #lanes span{color:rgba(4,20,12,.45);border-color:rgba(4,20,12,.2)}#turn.now #lanes span.ok{background:var(--on);color:var(--mint);border-color:var(--on)}
+.light #turn.now #lanes span{color:rgba(255,255,255,.55);border-color:rgba(255,255,255,.3)}
+/* current road name, centred above the trip panel */
+#road{display:none;left:50%;transform:translateX(-50%);bottom:calc(var(--botH,190px) + 26px + env(safe-area-inset-bottom) - var(--gap,0px));max-width:min(46vw,260px);padding:9px 16px;border-radius:14px;font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--glass2);box-shadow:var(--sh2)}
+body.navmode #road.on{display:block;animation:rise .4s var(--ease) both}
+body.alts #road{display:none!important}
+@media(orientation:landscape) and (max-height:520px){#road{display:none!important}}
+#bot .bgh .grab{width:44px}
+#stat>div+div{border-left:1px solid var(--edge)}
+
+/* search & places */
+#res div[data-ll]{justify-content:flex-start}
+#res div[data-ll]:before{content:"";flex:none;width:36px;height:36px;border-radius:11px;background:rgba(var(--mrgb),.12) center/18px no-repeat;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a6f2c8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z'/%3E%3Ccircle cx='12' cy='9.5' r='2.5'/%3E%3C/svg%3E")}
+.light #res div[data-ll]:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2307804a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z'/%3E%3Ccircle cx='12' cy='9.5' r='2.5'/%3E%3C/svg%3E")}
+#res div[data-ll] .rn{flex:1}#res div[data-ll] em{margin-left:auto}
+#res .addrow em{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:rgba(var(--mrgb),.12)}
+body.deck #res div{border-radius:14px;border-top:0;margin-bottom:2px}body.deck #res div:active{background:var(--fill)}
+.dkhw{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 4px}
+.dkhw .dkr{flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border:1px solid var(--edge);border-radius:var(--r3);background:var(--surf)}
+.dkhw .dkr>span{width:100%}.dkhw .dkr small{white-space:nowrap}
+body.deck .dkr{border-top:0;border-radius:14px}
+body.deck #dkl>.dkr{padding:10px 6px}
+.ih{align-items:center}
+#info .cta .go{display:flex;align-items:center;justify-content:center;gap:10px}
+#info .cta .go:before{content:"";width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l8 18-8-4-8 4z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l8 18-8-4-8 4z'/%3E%3C/svg%3E") center/contain no-repeat}
+.iact button{background:var(--surf)}
+
+/* route choice: labels are speech bubbles pointing at their line; cards are tighter */
+.rlab{overflow:visible}
+.rlab:after{content:"";position:absolute;left:50%;bottom:-6px;width:10px;height:10px;margin-left:-5px;transform:rotate(45deg);background:inherit;border-right:1px solid var(--edge);border-bottom:1px solid var(--edge);border-radius:0 0 3px 0}
+.rlab.cur:after{border-color:var(--mint)}
+.rc{padding:14px 14px 12px}
+.rc:not(.sel){background:var(--surf)}
+.rc:not(.sel) .rbig{font-size:26px}
+.rc:not(.sel) .go{height:42px;padding:0 18px}
+.rc .rt{align-items:flex-start}
+#sheet>.chips.c{margin-top:6px;gap:8px}#sheet>.chips.c .chip{flex:1;justify-content:center;height:44px;background:var(--surf);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+
+/* settings: grouped, inset cards like a native settings screen */
+#sl{padding-bottom:20px}
+#sl>.srow,#sl>.segw,#sl>.cars,#sl>.ccol{margin:0 16px;width:calc(100% - 32px);background:var(--surf);border-top:1px solid var(--edge);border-bottom:0}
+#sl>.srow:last-child{border-bottom:0}
+#sl>.sg+*{border-top:0;border-radius:var(--r2) var(--r2) 0 0}
+#sl>*:has(+.sg),#sl>*:last-child{border-radius:0 0 var(--r2) var(--r2);margin-bottom:2px}
+#sl>.sg+*:has(+.sg),#sl>.sg+*:last-child{border-radius:var(--r2)}
+#sl>.segw{border-top:0;padding:4px 16px 14px}
+#sl>.cars{border-top:0;padding:14px 12px}
+#sl>.srow{padding:12px 16px}
+#sl>.sg{padding:0 32px;margin:26px 0 8px}
+#sl>.sg[style]{padding:12px 32px 0;margin:0;font-weight:500;letter-spacing:0;font-size:13px;text-transform:none!important}
+.srow:active{background:var(--fill2)}
+.sth{position:sticky;top:0;z-index:2;background:var(--ink);padding-bottom:10px}
+.cart{background:var(--fill)}
+#styl .sgrid{gap:10px}.stl{background:var(--surf)}
+#spot{border-radius:var(--r4)}.spc2{border-radius:12px}.spmini{border-radius:12px}.spin{border-radius:14px}.spgo{border-radius:var(--r2)}
+.ttc{border-radius:var(--r4);box-shadow:var(--sh2)}
 </style>
 <script>
 (function(){var d=document.documentElement,st=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches),ios=/iPhone|iPad|iPod/.test(navigator.userAgent);
@@ -560,9 +628,9 @@ function fit(){var h=innerHeight,w=innerWidth,sh=w>h?Math.min(screen.width,scree
 d.style.setProperty('--gap',g+'px');d.style.setProperty('--H',(h+g)+'px');try{map.resize()}catch(e){}}
 fit();['resize','orientationchange','pageshow'].forEach(function(e){addEventListener(e,function(){fit();setTimeout(fit,200);setTimeout(fit,700)})})})();
 </script>
-<meta name="build" content="2026-11-02b">
+<meta name="build" content="2026-11-02c">
 <script>
-(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02b";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
+(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02c";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
 try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/name="build" content="([^"]+)"/);if(m&&m[1]!==B){try{sessionStorage.setItem("rl",String((+sessionStorage.getItem("rl")||0)+1))}catch(e){}location.replace(location.pathname+"?v="+m[1])}}).catch(function(){})}catch(e){}})();
 </script>
 </head>
@@ -603,7 +671,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   </div>
   <div id="res" class="glass"></div>
   <div id="dk"><div class="dkc" id="dkc"></div>
-    <div id="dkl"></div><div class="bld">Version 2026-11-02b</div></div>
+    <div id="dkl"></div><div class="bld">Version 2026-11-02c</div></div>
   <div class="chips main">
     <button class="chip glass" onclick="goSaved('home')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</button>
     <button class="chip glass" onclick="goSaved('work')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3"/></svg>Work</button>
@@ -656,6 +724,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
 </div>
 <div id="styl" class="fixed glass sheet"></div>
 <button id="rc" class="fixed glass" onclick="recenter()"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 17-7-4-7 4z"/></svg>Recenter</button>
+<div id="road" class="fixed glass" aria-hidden="true"></div>
 <div id="spd" class="fixed"><svg id="spr" viewBox="0 0 100 100"></svg><div class="sn"><b id="sv">0</b><small>km/h</small></div><div id="slm"><span id="slv"></span></div></div>
 <div id="rep" class="fixed">
   <button class="circ glass" onclick="tog('d3')" aria-label="Switch 3D or 2D view"><b id="d3t">3D</b></button>
@@ -900,7 +969,7 @@ function draw(fit=true){
   if(!nav)routes.forEach((r,i)=>{const c=r.geometry.coordinates,p=c[Math.floor(c.length*(.35+.12*i))],d=mins[i]-mins[sel];
     const e=document.createElement('div');e.className='rlab'+(i===sel?' cur':'');
     e.textContent=i===sel?mins[i]+' min':d===0?'Same time':Math.abs(d)+' min '+(d>0?'slower':'faster');
-    e.onclick=()=>pickRoute(i);labs.push(new maplibregl.Marker({element:e}).setLngLat(p).addTo(map))});
+    e.onclick=()=>pickRoute(i);labs.push(new maplibregl.Marker({element:e,anchor:'bottom',offset:[0,-4]}).setLngLat(p).addTo(map))});
   const keep=$('cards').scrollTop;
   $('rsm').textContent=routes.length+(routes.length>1?' routes':' route')+' found';
   $('cards').innerHTML=routes.map((r,i)=>{const m=mins[i],t=tollOf(r),d=m-best,tags=[];if(r._live){const dl=Math.round((r._delay||0)/60);tags.push(dl>=2?`<span class="tag toll">+${dl} min traffic</span>`:'<span class="tag fast">Light traffic</span>')}if(r._cur)tags.push('<span class="tag fast">Current route</span>');if(r._nh)tags.push('<span class="tag">No highway</span>');
@@ -988,7 +1057,7 @@ async function startNav(){
   lockCam({center:me,bearing:dispB,duration:1600});track();
   keepAwake();loadBdet();
 }
-function stopNav(arrived){clearPk();store.set('reports',[]);try{loadReports()}catch(e){}$('bot').classList.remove('exp');altOpen=false;document.body.classList.remove('alts');hdg=null;saveTrip(!!arrived);trip=null;camOn=false;nav=false;free=false;$('rc').style.display='none';document.body.classList.remove('navmode');speechSynthesis.cancel();
+function stopNav(arrived){clearPk();$('road').classList.remove('on');$('turn').classList.remove('now');store.set('reports',[]);try{loadReports()}catch(e){}$('bot').classList.remove('exp');altOpen=false;document.body.classList.remove('alts');hdg=null;saveTrip(!!arrived);trip=null;camOn=false;nav=false;free=false;$('rc').style.display='none';document.body.classList.remove('navmode');speechSynthesis.cancel();
   $('turn').style.display=$('bot').style.display=$('spd').style.display='none';$('top').style.display='block';clearRoute()}
 function track(){
   const st=S(),s=st[idx];if(!s||!me)return;
@@ -996,7 +1065,8 @@ function track(){
   $('dist').innerHTML=d>=1000?(d/1000).toFixed(1)+'<i>km</i>':Math.round(d/10)*10+'<i>m</i>';
   const arrv=s.maneuver.type==='arrive',side=arrv?arrSide():'',T=arrv?'Arrive at '+(destName||'your destination')+(side?', on the '+side:''):text(s);
   if($('ins').textContent!==T){$('arr').classList.remove('bump');void $('arr').offsetWidth;$('arr').classList.add('bump')}$('ins').textContent=T;
-  showLanes(s,d);if($('arr')._k!==arrow(s)){$('arr')._k=arrow(s);$('arr').innerHTML=mvSvg(arrow(s))}
+  showLanes(s,d);$('turn').classList.toggle('now',d<120&&!arrv);
+  {const cr=st[idx-1]&&st[idx-1].name,rp=$('road');rp.textContent=cr||'';rp.classList.toggle('on',!!cr)}if($('arr')._k!==arrow(s)){$('arr')._k=arrow(s);$('arr').innerHTML=mvSvg(arrow(s))}
   {const nx=st[idx+1];const th=nx&&s.maneuver.type!=='arrive'&&s.distance<450;$('turn').classList.toggle('th',!!th);if(th){$('thi').innerHTML=mvSvg(arrow(nx));$('thn').textContent=nx.maneuver.type==='arrive'?'arrive at '+(destName||'destination'):(nx.name||'')}}
   if(d<1300&&d>700&&window._said1!==idx&&st[idx-1]&&st[idx-1].distance>1800&&s.maneuver.type!=='arrive'){window._said1=idx;say('In 1 kilometre, '+text(s),'Dalam 1 kilometer, '+textMs(s))}
   if(d<250&&window._said!==idx){window._said=idx;{const dd=Math.max(50,Math.round(d/50)*50),arr=s.maneuver.type==='arrive';say(arr?'You will arrive soon'+(side?'. Your destination is on the '+side:''):'In '+dd+' metres, '+text(s),arr?'Anda akan tiba tidak lama lagi'+(side?'. Destinasi di sebelah '+(side==='left'?'kiri':'kanan'):''):'Dalam '+dd+' meter, '+textMs(s))}}
@@ -1329,7 +1399,7 @@ function slotRow(k){const p=store.get('saved_'+k),n=store.get('savedn_'+k),L=k[0
 function renderDeck(){const rec=store.get('recent')||[],seen=new Set(rec.map(x=>x.n));
   const tr=(store.get('trips')||[]).filter(t=>!seen.has(t.name)&&seen.add(t.name)).map(t=>({n:t.name,s:'From your trips',ll:t.to}));
   const all=rec.concat(tr).slice(0,10);window._rec=all;
-  $('dkl').innerHTML=slotRow('home')+slotRow('work')+(all.length?'<div class="dkh">Recent</div>':'')+all.map((x,i)=>`<button class="dkr" data-ll="${x.ll}" data-n="${esc(x.n)}" onclick="goRec(${i})"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><span><b>${esc(x.n)}</b><small>${esc(x.s||'')}</small></span></button>`).join('')}
+  $('dkl').innerHTML='<div class="dkhw">'+slotRow('home')+slotRow('work')+'</div>'+(all.length?'<div class="dkh">Recent</div>':'')+all.map((x,i)=>`<button class="dkr" data-ll="${x.ll}" data-n="${esc(x.n)}" onclick="goRec(${i})"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><span><b>${esc(x.n)}</b><small>${esc(x.s||'')}</small></span></button>`).join('')}
 function goRec(i){const x=window._rec[i];setDest({lng:x.ll[0],lat:x.ll[1]},x.n,x.s)}
 function goFav(i){const x=window._fav[i];setDest({lng:x.ll[0],lat:x.ll[1]},x.n,x.s)}
 function goNear(i){const x=window._near[i];setDest({lng:x.ll[0],lat:x.ll[1]},x.e.tags&&x.e.tags.name||x.lab)}
