@@ -629,9 +629,9 @@ function fit(){var h=innerHeight,w=innerWidth,sh=w>h?Math.min(screen.width,scree
 d.style.setProperty('--gap',g+'px');d.style.setProperty('--H',(h+g)+'px');try{map.resize()}catch(e){}}
 fit();['resize','orientationchange','pageshow'].forEach(function(e){addEventListener(e,function(){fit();setTimeout(fit,200);setTimeout(fit,700)})})})();
 </script>
-<meta name="build" content="2026-11-02e">
+<meta name="build" content="2026-11-03a">
 <script>
-(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-02e";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
+(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-03a";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
 try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/name="build" content="([^"]+)"/);if(m&&m[1]!==B){try{sessionStorage.setItem("rl",String((+sessionStorage.getItem("rl")||0)+1))}catch(e){}location.replace(location.pathname+"?v="+m[1])}}).catch(function(){})}catch(e){}})();
 </script>
 </head>
@@ -672,7 +672,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   </div>
   <div id="res" class="glass"></div>
   <div id="dk"><div class="dkc" id="dkc"></div>
-    <div id="dkl"></div><div class="bld">Version 2026-11-02e</div></div>
+    <div id="dkl"></div><div class="bld">Version 2026-11-03a</div></div>
   <div class="chips main">
     <button class="chip glass" onclick="goSaved('home')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</button>
     <button class="chip glass" onclick="goSaved('work')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3"/></svg>Work</button>
@@ -857,8 +857,8 @@ async function ttSearch(q,o,sig){if(ttSearchOff)return[];let r;
   if(!r.ok){const up=j&&j.status;ttStat=r.status===403?'The relay blocked this site (check ALLOWED_ORIGINS)':r.status===429?'Too many searches for now, try again in a minute':up?`TomTom refused the search (error ${up}${up===403||up===401?': the Search API may not be enabled for your TomTom key':''})`:'TomTom search failed (relay error '+r.status+')';throw 0}
   if(!j||!Array.isArray(j.results)){ttSearchOff=true;ttStat='The relay has no /search route yet (redeploy relay/worker.js)';return[]}
   ttStat='';
-  return j.results.filter(x=>x.position).map(x=>{const a=x.address||{},p=x.poi||{},nm=p.name||(x.type==='Geography'?(a.municipality||a.countrySubdivision||a.freeformAddress):a.streetName&&a.streetNumber?a.streetNumber+' '+a.streetName:a.streetName||a.freeformAddress||'Place');
-    return{geometry:{coordinates:[x.position.lon,x.position.lat]},properties:{name:nm,street:p.name?(a.streetName||''):'',district:a.municipalitySubdivision||'',city:a.municipality||'',state:a.countrySubdivision||'',cat:((p.categories||[])[0]||''),brand:((p.brands||[])[0]||{}).name||'',phone:p.phone||'',src:'tt'}}})}
+  return j.results.filter(x=>x.position).map((x,rk)=>{const a=x.address||{},p=x.poi||{},nm=p.name||(x.type==='Geography'?(a.municipality||a.countrySubdivision||a.freeformAddress):a.streetName&&a.streetNumber?a.streetNumber+' '+a.streetName:a.streetName||a.freeformAddress||'Place');
+    return{geometry:{coordinates:[x.position.lon,x.position.lat]},properties:{name:nm,street:p.name?(a.streetName||''):'',district:a.municipalitySubdivision||'',city:a.municipality||'',state:a.countrySubdivision||'',cat:((p.categories||[])[0]||''),brand:((p.brands||[])[0]||{}).name||'',phone:p.phone||'',src:'tt',rk}}})}
 async function search(v){
   const id=++sq,o=me?{lat:me[1],lng:me[0]}:map.getCenter(),from=[o.lng,o.lat],ex=expandQ(v);let fails=0;
   const ac=new AbortController(),tmo=setTimeout(()=>ac.abort(),6000);
@@ -893,8 +893,8 @@ function rankHits(q,list,from){const out=[];
     const dup=out.find(x=>expandQ(x.f.properties.name)===k&&dm(x.f.geometry.coordinates,c)<150);
     if(dup){const dp=dup.f.properties;if(!dp.osm_id&&p.osm_id){dp.osm_type=p.osm_type;dp.osm_id=p.osm_id}['street','district','city','phone'].forEach(z=>{if(!dp[z]&&p[z])dp[z]=p[z]});return}
     const d=dm(from,c),m=Math.max(matchScore(q,p.name,[p.brand,p.street,p.city].join(' ')),matchScore(q,(p.brand||'')+' '+(p.city||'')));
-    out.push({f,d,m,s:m*100-12*Math.log10(1+d/1000)+(p.src==='tt'&&p.cat?2:0)})});
-  const keep=out.filter(x=>x.m>=.3);return(keep.length?keep:out).sort((a,b)=>b.s-a.s).slice(0,15)}
+    out.push({f,d,m,s:m*100-12*Math.log10(1+d/1000)+(p.src==='tt'?Math.max(0,12-p.rk)+(p.cat?2:0):0)})});
+  const keep=out.filter(x=>x.m>=.3||x.f.properties.src==='tt');return(keep.length?keep:out).sort((a,b)=>b.s-a.s).slice(0,20)}
 const subOf=p=>[p.street,p.district||p.suburb,p.city||p.county,p.state].filter(Boolean).join(', ');
 let slot=null;
 function pick(i){const f=window._hits[i],p=f.properties,ll={lng:f.geometry.coordinates[0],lat:f.geometry.coordinates[1]},n=p.name||p.street||'Place';
