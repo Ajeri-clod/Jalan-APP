@@ -1,0 +1,92 @@
+# Publishes Jalan to GitHub Pages together with the free place-search data.
+#
+# The place data comes from Overture Maps (open data, no account or key) and is
+# rebuilt once a month by tools/build_places.py. Between rebuilds it is kept as a
+# file on the "places-data" GitHub Release, so ordinary app updates deploy fast.
+#
+# One-time setup: repository Settings -> Pages -> Build and deployment ->
+# Source: "GitHub Actions".
+# To rebuild the data now: Actions -> "Deploy site" -> Run workflow -> tick "Rebuild places".
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      rebuild_places:
+        description: Rebuild place-search data from the newest Overture Maps release
+        type: boolean
+        default: false
+  schedule:
+    - cron: '23 19 3 * *'   # 4th of each month, 03:23 Malaysia time (19:23 UTC on the 3rd)
+
+permissions:
+  contents: write   # store the built data on the places-data release
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get saved place data
+        id: saved
+        run: |
+          mkdir -p data
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.rebuild_places }}" = "true" ]; then
+            echo "rebuild=true" >> "$GITHUB_OUTPUT"
+          elif gh release download places-data -p places.tar.gz -D data; then
+            echo "rebuild=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No saved place data yet, building it"
+            echo "rebuild=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.saved.outputs.rebuild == 'true'
+        with:
+          python-version: '3.12'
+
+      - name: Build place data from Overture Maps
+        if: steps.saved.outputs.rebuild == 'true'
+        continue-on-error: true   # if Overture is unreachable, still publish the app (search falls back to TomTom + OSM)
+        run: |
+          pip install 'duckdb>=1.1'
+          python tools/build_places.py data/places
+          tar -czf data/places.tar.gz -C data places
+          gh release view places-data >/dev/null 2>&1 || \
+            gh release create places-data --title "Place search data" \
+              --notes "Built automatically from Overture Maps (CDLA Permissive 2.0) by .github/workflows/pages.yml. Do not delete."
+          gh release upload places-data data/places.tar.gz --clobber
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          rsync -a --exclude='.git' --exclude='.github' --exclude='tools' --exclude='relay' \
+                --exclude='data' --exclude='_site' ./ _site/
+          if [ -f data/places.tar.gz ]; then tar -xzf data/places.tar.gz -C _site; else echo "::warning::No place data, publishing without it"; mkdir -p _site/places/s; fi
+          echo "Site size: $(du -sh _site | cut -f1), place files: $(ls _site/places/s | wc -l)"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
