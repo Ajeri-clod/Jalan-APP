@@ -629,9 +629,9 @@ function fit(){var h=innerHeight,w=innerWidth,sh=w>h?Math.min(screen.width,scree
 d.style.setProperty('--gap',g+'px');d.style.setProperty('--H',(h+g)+'px');try{map.resize()}catch(e){}}
 fit();['resize','orientationchange','pageshow'].forEach(function(e){addEventListener(e,function(){fit();setTimeout(fit,200);setTimeout(fit,700)})})})();
 </script>
-<meta name="build" content="2026-11-03a">
+<meta name="build" content="2026-11-03b">
 <script>
-(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-03a";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
+(function(){try{localStorage.removeItem("ttkey")}catch(e){}var B="2026-11-03b";try{var rc=+sessionStorage.getItem("rl")||0;if(rc>=2)return;}catch(e){}if(location.search.indexOf("v="+B)>-1)return;
 try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(t){var m=t.match(/name="build" content="([^"]+)"/);if(m&&m[1]!==B){try{sessionStorage.setItem("rl",String((+sessionStorage.getItem("rl")||0)+1))}catch(e){}location.replace(location.pathname+"?v="+m[1])}}).catch(function(){})}catch(e){}})();
 </script>
 </head>
@@ -672,7 +672,7 @@ try{fetch(location.pathname+"?_="+Date.now(),{cache:"no-store"}).then(function(r
   </div>
   <div id="res" class="glass"></div>
   <div id="dk"><div class="dkc" id="dkc"></div>
-    <div id="dkl"></div><div class="bld">Version 2026-11-03a</div></div>
+    <div id="dkl"></div><div class="bld">Version 2026-11-03b</div></div>
   <div class="chips main">
     <button class="chip glass" onclick="goSaved('home')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</button>
     <button class="chip glass" onclick="goSaved('work')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3"/></svg>Work</button>
@@ -868,8 +868,8 @@ async function search(v){
   const tryit=async fn=>{try{return await fn()}catch(e){fails++;return[]}};
   // TomTom and OpenStreetMap at the same time; the expanded query helps OSM with "jln", "tmn", "kg" ...
   ttStat=ttSearchOff?ttStat:'';
-  let [T,O]=await Promise.all([tryit(()=>ttSearch(v,o,ac.signal)),tryit(()=>ph(ex!==normQ(v)?ex:v,true))]);clearTimeout(tmo);if(id!==sq)return;
-  let all=T.concat(O);
+  let [T,O,V]=await Promise.all([tryit(()=>ttSearch(v,o,ac.signal)),tryit(()=>ph(ex!==normQ(v)?ex:v,true)),ovSearch(v,from)]);clearTimeout(tmo);if(id!==sq)return;
+  let all=T.concat(V,O);
   if(!all.length){all=await tryit(()=>nm(ex));if(id!==sq)return}
   if(!all.length){all=await tryit(()=>ph(v+' Malaysia',false));if(id!==sq)return}
   const show=list=>{if(id!==sq||qEl.value.trim()!==v||!document.body.classList.contains('typing'))return;
@@ -877,8 +877,9 @@ async function search(v){
     $('res').innerHTML=hits.map((h,i)=>{const p=h.f.properties,sub=[p.street,p.district||p.suburb,p.city||p.county,p.state].filter(Boolean).join(', ');
       return `<div onclick="pick(${i})" data-ll="${h.f.geometry.coordinates}" data-n="${esc(p.name||p.street||'Place')}" data-o="${p.osm_type||''}${p.osm_id||''}"><span class="rn">${esc(p.name||p.street||'Place')}<small>${esc(sub)}</small></span><em>${fmtD(h.d)}</em></div>`}).join('')
       ||(fails>=2&&!list.length?'<div>Search failed. Check your internet and try again.</div>':'<div>No results. Try the street or area name, e.g. "Mydin Seri Kembangan".</div>');
-    const nT=hits.filter(h=>h.f.properties.src==='tt').length;
-    $('res').insertAdjacentHTML('beforeend',`<p class="srcs${ttStat?' bad':''}">${ttStat?esc(ttStat)+'. Showing OpenStreetMap results only.':`Results from TomTom (${nT}) and OpenStreetMap (${hits.length-nT})`}<br><span>Data © TomTom, © OpenStreetMap contributors</span></p>`)};
+    const nT=hits.filter(h=>h.f.properties.src==='tt').length,nV=hits.filter(h=>h.f.properties.src==='ov').length,nO=hits.length-nT-nV,
+      src=[(!ttStat&&!ttSearchOff)&&`TomTom (${nT})`,OVX&&`Overture (${nV})`,`OpenStreetMap (${nO})`].filter(Boolean),srcTx='Results from '+src.slice(0,-1).join(', ')+(src.length>1?' and ':'')+src[src.length-1];
+    $('res').insertAdjacentHTML('beforeend',`<p class="srcs${ttStat?' bad':''}">${ttStat?esc(ttStat)+'. '+srcTx+'.':srcTx}<br><span>Data © TomTom, © Overture Maps Foundation, © OpenStreetMap contributors</span></p>`)};
   show(all);
   // few good name matches: also look for shops/places with that name or brand within 25 km (OpenStreetMap)
   const good=all.filter(f=>matchScore(v,f.properties.name)>=.6).length;
@@ -888,6 +889,20 @@ async function search(v){
       if(add.length){all=all.concat(add);show(all)}}catch(e){}}
 }
 // merge duplicates (same name within ~150 m, keeping the OSM id for the place card), then rank
+// ---- free Overture Maps places, published with the site as small JSON files (built by tools/build_places.py) ----
+let OVX=null,ovOff=false;const OVS={};
+async function ovIdx(){if(OVX||ovOff)return OVX;try{const r=await fetch('places/index.json');if(!r.ok)throw 0;const j=await r.json();if(!j||!j.s)throw 0;OVX=j}catch(e){ovOff=true}return OVX}
+// shards covering words that start with w (the index splits big prefixes into longer ones)
+function ovKeys(w){const S=OVX.s;for(let k=1;k<=w.length;k++){const p=w.slice(0,k);if(S[p]!=null)return[p]}
+  const ks=Object.keys(S).filter(k=>k.startsWith(w));if(ks.length<=6)return ks;return S[w+'_']!=null?[w+'_']:ks.sort((a,b)=>S[b]-S[a]).slice(0,6)}
+async function ovShard(k){if(!OVS[k])OVS[k]=fetch('places/s/'+k+'.json').then(r=>r.ok?r.json():[]).catch(()=>{delete OVS[k];return[]});return OVS[k]}
+async function ovSearch(q,from){try{if(!await ovIdx())return[];const N=normQ(q),ws=N.split(' ').filter(w=>w.length>=2);
+    const stop=new Set(OVX.stop||[]);let best=null;
+    ws.filter(w=>!stop.has(w)).forEach(w=>{const ks=ovKeys(w),c=ks.reduce((a,k)=>a+OVX.s[k],0);if(c&&(!best||c<best.c))best={ks,c}});
+    if(!best)return[];const recs=[].concat(...await Promise.all(best.ks.map(ovShard))),seen=new Set(),out=[];
+    recs.forEach(r=>{const k=r[0]+r[1]+r[2];if(seen.has(k))return;seen.add(k);const m=matchScore(q,r[0]);if(m<.5)return;const ll=[r[1]/1e5,r[2]/1e5];
+      out.push({m,d:dm(from,ll),f:{geometry:{coordinates:ll},properties:{name:r[0],street:r[3]?r[3].replace(/_/g,' ').replace(/^./,c=>c.toUpperCase()):'',city:r[4]||'',src:'ov'}}})});
+    return out.sort((a,b)=>(b.m*100-12*Math.log10(1+b.d/1000))-(a.m*100-12*Math.log10(1+a.d/1000))).slice(0,40).map(x=>x.f)}catch(e){return[]}}
 function rankHits(q,list,from){const out=[];
   list.forEach(f=>{const p=f.properties,c=f.geometry.coordinates,k=expandQ(p.name);if(!c||c[0]==null)return;
     const dup=out.find(x=>expandQ(x.f.properties.name)===k&&dm(x.f.geometry.coordinates,c)<150);
